@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | NikahKu</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'islamic-gold': '#D4AF37',
+                        'islamic-gold-light': '#F4E4BA',
+                        'islamic-green': '#1B4332',
+                        'islamic-green-light': '#2D6A4F',
+                        'islamic-cream': '#FDF8F3',
+                    },
+                    fontFamily: {
+                        'arabic': ['Amiri', 'serif'],
+                        'primary': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-islamic-cream font-primary">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-islamic-green to-islamic-green-light text-white transform -translate-x-full lg:translate-x-0 transition-transform z-40">
+        <!-- Logo -->
+        <div class="p-6 border-b border-white/20">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-islamic-gold rounded-full flex items-center justify-center">
+                    <i class="fas fa-mosque text-islamic-green"></i>
+                </div>
+                <span class="text-xl font-bold">NikahKu</span>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="p-4 space-y-2">
+            <a href="#" onclick="showSection('dashboard')" class="nav-item active flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-home w-5"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" onclick="showSection('create')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-plus-circle w-5"></i>
+                <span>Buat Undangan</span>
+            </a>
+            <a href="#" onclick="showSection('invitations')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-envelope-open-text w-5"></i>
+                <span>Undangan Saya</span>
+            </a>
+            <a href="#" onclick="showSection('guests')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-users w-5"></i>
+                <span>Manajemen Tamu</span>
+            </a>
+            <a href="#" onclick="showSection('rsvp')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-clipboard-check w-5"></i>
+                <span>RSVP</span>
+            </a>
+        </nav>
+        
+        <!-- Bottom Actions -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/20">
+            <a href="#" onclick="showSection('settings')" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                <i class="fas fa-cog w-5"></i>
+                <span>Pengaturan</span>
+            </a>
+            <button onclick="logout()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-red-500/20 transition text-red-300">
+                <i class="fas fa-sign-out-alt w-5"></i>
+                <span>Keluar</span>
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="lg:ml-64 min-h-screen">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleSidebar()" class="lg:hidden text-islamic-green">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                
+                <h1 class="text-xl font-bold text-islamic-green" id="pageTitle">Dashboard</h1>
+                
+                <!-- User Profile -->
+                <div class="flex items-center space-x-4">
+                    <button class="relative text-gray-600 hover:text-islamic-green">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">3</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=1B4332&color=fff" alt="User" class="w-10 h-10 rounded-full">
+                        <div class="hidden sm:block">
+                            <p id="userName" class="font-medium text-gray-800">User</p>
+                            <p class="text-xs text-gray-500">Free Plan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content Area -->
+        <div class="p-6">
+            
+            <!-- =====================================================
+                 SECTION: DASHBOARD OVERVIEW
+                 ===================================================== -->
+            <section id="section-dashboard" class="content-section">
+                <!-- Welcome Card -->
+                <div class="bg-gradient-to-r from-islamic-green to-islamic-green-light rounded-2xl p-8 text-white mb-8 relative overflow-hidden">
+                    <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+                    <div class="relative z-10">
+                        <h2 class="text-2xl font-bold mb-2">Assalamualaikum, <span id="welcomeName">User</span>! 👋</h2>
+                        <p class="text-white/80">Selamat datang di dashboard NikahKu. Ayo buat undangan pernikahan impianmu!</p>
+                        <button onclick="showSection('create')" class="mt-4 bg-islamic-gold text-islamic-green px-6 py-2 rounded-full font-semibold hover:bg-white transition">
+                            <i class="fas fa-plus mr-2"></i>Buat Undangan Baru
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Undangan</p>
+                                <p class="text-3xl font-bold text-islamic-green" id="statInvitations">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-islamic-green/10 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-2xl text-islamic-green"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Tamu</p>
+                                <p class="text-3xl font-bold text-islamic-gold" id="statGuests">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-islamic-gold/10 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-users text-2xl text-islamic-gold"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Konfirmasi Hadir</p>
+                                <p class="text-3xl font-bold text-green-600" id="statConfirmed">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Tidak Hadir</p>
+                                <p class="text-3xl font-bold text-red-500" id="statDeclined">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-times-circle text-2xl text-red-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Invitations -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-islamic-green mb-4">Undangan Terbaru</h3>
+                    <div id="recentInvitations" class="space-y-4">
+                        <p class="text-gray-500 text-center py-8">Belum ada undangan. <a href="#" onclick="showSection('create')" class="text-islamic-green hover:underline">Buat sekarang!</a></p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 SECTION: CREATE INVITATION
+                 ===================================================== -->
+            <section id="section-create" class="content-section hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-islamic-green mb-6">
+                        <i class="fas fa-plus-circle mr-2"></i>Buat Undangan Baru
+                    </h2>
+                    
+                    <!-- Progress Steps -->
+                    <div class="flex items-center justify-between mb-8 px-4">
+                        <div class="step-indicator active flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-islamic-green text-white flex items-center justify-center font-bold">1</div>
+                            <span class="text-xs mt-2 text-islamic-green font-medium">Data Mempelai</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="progress-line h-full bg-islamic-green" style="width: 0%"></div></div>
+                        <div class="step-indicator flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">2</div>
+                            <span class="text-xs mt-2 text-gray-500">Acara</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="progress-line h-full bg-islamic-green" style="width: 0%"></div></div>
+                        <div class="step-indicator flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">3</div>
+                            <span class="text-xs mt-2 text-gray-500">Galeri</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="progress-line h-full bg-islamic-green" style="width: 0%"></div></div>
+                        <div class="step-indicator flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">4</div>
+                            <span class="text-xs mt-2 text-gray-500">Selesai</span>
+                        </div>
+                    </div>
+                    
+                    <form id="invitationForm" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        
+                        <!-- Step 1: Data Mempelai -->
+                        <div id="formStep1" class="form-step p-8">
+                            <h3 class="text-xl font-bold text-islamic-green mb-6 flex items-center">
+                                <span class="w-8 h-8 bg-islamic-green text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                                Data Mempelai
+                            </h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <!-- Mempelai Pria -->
+                                <div class="bg-blue-50 rounded-xl p-6">
+                                    <h4 class="font-bold text-blue-800 mb-4"><i class="fas fa-male mr-2"></i>Mempelai Pria</h4>
+                                    
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Lengkap *</label>
+                                            <input type="text" id="groomName" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama mempelai pria">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Ayah</label>
+                                            <input type="text" id="groomFather"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama ayah mempelai pria">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Ibu</label>
+                                            <input type="text" id="groomMother"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama ibu mempelai pria">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Anak Ke-</label>
+                                            <input type="text" id="groomChildOrder"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Contoh: Pertama">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mempelai Wanita -->
+                                <div class="bg-pink-50 rounded-xl p-6">
+                                    <h4 class="font-bold text-pink-800 mb-4"><i class="fas fa-female mr-2"></i>Mempelai Wanita</h4>
+                                    
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Lengkap *</label>
+                                            <input type="text" id="brideName" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama mempelai wanita">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Ayah</label>
+                                            <input type="text" id="brideFather"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama ayah mempelai wanita">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Nama Ibu</label>
+                                            <input type="text" id="brideMother"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Nama ibu mempelai wanita">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Anak Ke-</label>
+                                            <input type="text" id="brideChildOrder"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="Contoh: Kedua">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end mt-6">
+                                <button type="button" onclick="nextStep(2)" class="bg-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                                    Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Detail Acara -->
+                        <div id="formStep2" class="form-step hidden p-8">
+                            <h3 class="text-xl font-bold text-islamic-green mb-6 flex items-center">
+                                <span class="w-8 h-8 bg-islamic-green text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                                Detail Acara
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                <!-- Akad Nikah -->
+                                <div class="bg-islamic-cream rounded-xl p-6">
+                                    <h4 class="font-bold text-islamic-green mb-4"><i class="fas fa-ring mr-2"></i>Akad Nikah</h4>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Tanggal *</label>
+                                            <input type="date" id="akadDate" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Waktu *</label>
+                                            <input type="time" id="akadTime" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Lokasi/Alamat *</label>
+                                            <textarea id="akadLocation" rows="2" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none resize-none"
+                                                placeholder="Nama tempat dan alamat lengkap"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resepsi -->
+                                <div class="bg-islamic-cream rounded-xl p-6">
+                                    <h4 class="font-bold text-islamic-green mb-4"><i class="fas fa-glass-cheers mr-2"></i>Resepsi</h4>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Tanggal *</label>
+                                            <input type="date" id="resepsiDate" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Waktu *</label>
+                                            <input type="time" id="resepsiTime" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Lokasi/Alamat *</label>
+                                            <textarea id="resepsiLocation" rows="2" required
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none resize-none"
+                                                placeholder="Nama tempat dan alamat lengkap"></textarea>
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-gray-700 text-sm font-medium mb-1">Link Google Maps</label>
+                                            <input type="url" id="mapsLink"
+                                                class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                                placeholder="https://goo.gl/maps/...">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pesan Tambahan -->
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-1">Pesan/Doa untuk Tamu</label>
+                                    <textarea id="specialMessage" rows="3"
+                                        class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none resize-none"
+                                        placeholder="Tuliskan pesan atau doa untuk para tamu..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between mt-6">
+                                <button type="button" onclick="prevStep(1)" class="border-2 border-islamic-green text-islamic-green px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green hover:text-white transition">
+                                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                                </button>
+                                <button type="button" onclick="nextStep(3)" class="bg-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                                    Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Galeri & Template -->
+                        <div id="formStep3" class="form-step hidden p-8">
+                            <h3 class="text-xl font-bold text-islamic-green mb-6 flex items-center">
+                                <span class="w-8 h-8 bg-islamic-green text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                                Galeri Foto
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                <!-- Cover Photo -->
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Foto Cover (Utama)</label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-islamic-green transition cursor-pointer" onclick="document.getElementById('coverPhoto').click()">
+                                        <input type="file" id="coverPhoto" accept="image/*" class="hidden" onchange="previewImage(this, 'coverPreview')">
+                                        <div id="coverPreview" class="hidden mb-4">
+                                            <img src="" alt="Preview" class="max-h-48 mx-auto rounded-lg">
+                                        </div>
+                                        <div id="coverPlaceholder">
+                                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                            <p class="text-gray-500">Klik untuk upload foto cover</p>
+                                            <p class="text-gray-400 text-sm">JPG, PNG (Max 5MB)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Gallery Photos -->
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Galeri Foto (Opsional)</label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-islamic-green transition cursor-pointer" onclick="document.getElementById('galleryPhotos').click()">
+                                        <input type="file" id="galleryPhotos" accept="image/*" multiple class="hidden" onchange="previewGallery(this)">
+                                        <div id="galleryPreview" class="grid grid-cols-3 gap-2 mb-4"></div>
+                                        <div id="galleryPlaceholder">
+                                            <i class="fas fa-images text-4xl text-gray-400 mb-2"></i>
+                                            <p class="text-gray-500">Klik untuk upload foto galeri</p>
+                                            <p class="text-gray-400 text-sm">Maksimal 6 foto</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between mt-6">
+                                <button type="button" onclick="prevStep(2)" class="border-2 border-islamic-green text-islamic-green px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green hover:text-white transition">
+                                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                                </button>
+                                <button type="button" onclick="nextStep(4)" class="bg-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                                    Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Review & Submit -->
+                        <div id="formStep4" class="form-step hidden p-8">
+                            <h3 class="text-xl font-bold text-islamic-green mb-6 flex items-center">
+                                <span class="w-8 h-8 bg-islamic-green text-white rounded-full flex items-center justify-center text-sm mr-3">4</span>
+                                Review & Simpan
+                            </h3>
+                            
+                            <!-- Review Summary -->
+                            <div id="reviewSummary" class="bg-islamic-cream rounded-xl p-6 mb-6">
+                                <!-- Will be filled dynamically -->
+                            </div>
+                            
+                            <div class="flex justify-between mt-6">
+                                <button type="button" onclick="prevStep(3)" class="border-2 border-islamic-green text-islamic-green px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green hover:text-white transition">
+                                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                                </button>
+                                <button type="submit" id="submitBtn" class="bg-gradient-to-r from-islamic-gold to-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition">
+                                    <i class="fas fa-save mr-2"></i> Simpan Undangan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 SECTION: GUEST MANAGEMENT
+                 ===================================================== -->
+            <section id="section-guests" class="content-section hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h2 class="text-2xl font-bold text-islamic-green">
+                            <i class="fas fa-users mr-2"></i>Manajemen Tamu
+                        </h2>
+                        <button onclick="openAddGuestModal()" class="bg-islamic-green text-white px-6 py-2 rounded-xl hover:bg-islamic-green-light transition">
+                            <i class="fas fa-plus mr-2"></i>Tambah Tamu
+                        </button>
+                    </div>
+                    
+                    <!-- Select Invitation -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                        <label class="block text-gray-700 font-medium mb-2">Pilih Undangan</label>
+                        <select id="selectInvitation" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none" onchange="loadGuests()">
+                            <option value="">-- Pilih Undangan --</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Guest List -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="p-6 border-b">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <h3 class="font-bold text-gray-800">Daftar Tamu</h3>
+                                <div class="relative">
+                                    <input type="text" id="searchGuest" placeholder="Cari nama tamu..." 
+                                        class="pl-10 pr-4 py-2 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                        onkeyup="filterGuests()">
+                                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Nama Tamu</th>
+                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Link Undangan</th>
+                                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="guestTableBody" class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                            Pilih undangan untuk melihat daftar tamu
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 SECTION: MY INVITATIONS
+                 ===================================================== -->
+            <section id="section-invitations" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-islamic-green mb-6">
+                    <i class="fas fa-envelope-open-text mr-2"></i>Undangan Saya
+                </h2>
+                
+                <div id="invitationsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <i class="fas fa-envelope text-6xl text-gray-300 mb-4"></i>
+                        <p>Belum ada undangan.</p>
+                        <button onclick="showSection('create')" class="mt-4 text-islamic-green hover:underline">
+                            Buat undangan pertama Anda →
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 SECTION: RSVP
+                 ===================================================== -->
+            <section id="section-rsvp" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-islamic-green mb-6">
+                    <i class="fas fa-clipboard-check mr-2"></i>Konfirmasi Kehadiran (RSVP)
+                </h2>
+                
+                <!-- Select Invitation -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Pilih Undangan</label>
+                    <select id="rsvpSelectInvitation" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none" onchange="loadRSVP()">
+                        <option value="">-- Pilih Undangan --</option>
+                    </select>
+                </div>
+                
+                <!-- RSVP Summary -->
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check text-2xl text-green-600"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-green-600" id="rsvpConfirmed">0</p>
+                        <p class="text-gray-500">Hadir</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-times text-2xl text-red-500"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-red-500" id="rsvpDeclined">0</p>
+                        <p class="text-gray-500">Tidak Hadir</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-question text-2xl text-yellow-600"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-yellow-600" id="rsvpPending">0</p>
+                        <p class="text-gray-500">Belum Konfirmasi</p>
+                    </div>
+                </div>
+                
+                <!-- RSVP List -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h3 class="font-bold text-gray-800">Detail RSVP</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Nama</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Kehadiran</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Jumlah</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Ucapan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rsvpTableBody" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                        Pilih undangan untuk melihat RSVP
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 SECTION: SETTINGS
+                 ===================================================== -->
+            <section id="section-settings" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-islamic-green mb-6">
+                    <i class="fas fa-cog mr-2"></i>Pengaturan Akun
+                </h2>
+                
+                <div class="max-w-2xl">
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <form id="settingsForm" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                                <input type="text" id="settingsName"
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                                <input type="email" id="settingsEmail" disabled
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-100">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Nomor WhatsApp</label>
+                                <input type="tel" id="settingsPhone"
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <button type="submit" class="bg-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                                <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+    
+    <!-- Add Guest Modal -->
+    <div id="addGuestModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-islamic-green">Tambah Tamu</h3>
+                <button onclick="closeAddGuestModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="addGuestForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-1">Nama Tamu *</label>
+                    <input type="text" id="guestName" required
+                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none"
+                        placeholder="Nama lengkap tamu">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-1">Nomor WhatsApp (Opsional)</label>
+                    <input type="tel" id="guestPhone"
+                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none"
+                        placeholder="08xxxxxxxxxx">
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeAddGuestModal()" class="flex-1 border-2 border-gray-300 text-gray-600 py-3 rounded-xl font-medium hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="flex-1 bg-islamic-green text-white py-3 rounded-xl font-medium hover:bg-islamic-green-light transition">
+                        <i class="fas fa-plus mr-2"></i>Tambah
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Generated Link Modal -->
+    <div id="linkModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-islamic-green">Link Undangan</h3>
+                <button onclick="closeLinkModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="text-center mb-6">
+                <p class="text-gray-600 mb-2">Link undangan untuk:</p>
+                <p class="text-xl font-bold text-islamic-green" id="linkGuestName">Nama Tamu</p>
+            </div>
+            
+            <div class="bg-gray-100 rounded-xl p-4 mb-6">
+                <div class="flex items-center gap-2">
+                    <input type="text" id="generatedLink" readonly
+                        class="flex-1 bg-transparent outline-none text-sm text-gray-700">
+                    <button onclick="copyLink()" class="bg-islamic-green text-white px-4 py-2 rounded-lg hover:bg-islamic-green-light transition">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <a id="whatsappShare" href="#" target="_blank" class="flex-1 bg-green-500 text-white py-3 rounded-xl font-medium text-center hover:bg-green-600 transition">
+                    <i class="fab fa-whatsapp mr-2"></i>Kirim via WA
+                </a>
+                <button onclick="closeLinkModal()" class="flex-1 border-2 border-gray-300 text-gray-600 py-3 rounded-xl font-medium hover:bg-gray-50 transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg hidden z-50 flex items-center gap-3">
+        <i class="fas fa-check-circle text-xl"></i>
+        <span id="toastMessage">Berhasil!</span>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl text-center">
+            <div class="w-16 h-16 border-4 border-islamic-green border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-700">Memproses...</p>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+<!-- Upgrade Package Modal -->
+<div id="upgradeModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-islamic-green to-islamic-green-light p-6 text-white sticky top-0">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-bold">Upgrade Paket Undangan</h3>
+                    <p class="text-white/80 text-sm">Tingkatkan kuota link untuk undangan ini</p>
+                </div>
+                <button onclick="closeUpgradeModal()" class="text-white/80 hover:text-white">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Current Status -->
+        <div class="p-6 bg-islamic-cream border-b">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm">Undangan:</p>
+                    <p class="font-bold text-islamic-green" id="upgradeInvitationName">Ahmad & Fatimah</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-gray-600 text-sm">Status Kuota:</p>
+                    <p class="font-bold text-red-500" id="upgradeCurrentQuota">10/10 Link (Habis)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Package Options -->
+        <div class="p-6">
+            <h4 class="font-bold text-gray-800 mb-4">Pilih Paket Upgrade:</h4>
+            
+            <div class="grid md:grid-cols-3 gap-4" id="upgradePackageOptions">
+                <!-- BASIC -->
+                <div class="border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 transition cursor-pointer upgrade-option" data-package="basic" data-price="99000" onclick="selectUpgradePackage(this)">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-star text-blue-500 text-xl"></i>
+                        </div>
+                        <div class="w-6 h-6 border-2 border-gray-300 rounded-full upgrade-check hidden">
+                            <i class="fas fa-check text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <h5 class="font-bold text-gray-800 text-lg">BASIC</h5>
+                    <p class="text-2xl font-bold text-gray-800 my-2">Rp 99.000</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>100 Link Tamu</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Aktif 30 Hari</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Musik Latar</li>
+                    </ul>
+                </div>
+                
+                <!-- PREMIUM -->
+                <div class="border-2 border-islamic-gold rounded-2xl p-6 hover:border-islamic-green transition cursor-pointer upgrade-option relative" data-package="premium" data-price="199000" onclick="selectUpgradePackage(this)">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-islamic-gold text-islamic-green text-xs font-bold px-3 py-1 rounded-full">
+                        POPULER
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-islamic-gold/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-crown text-islamic-gold text-xl"></i>
+                        </div>
+                        <div class="w-6 h-6 border-2 border-gray-300 rounded-full upgrade-check hidden">
+                            <i class="fas fa-check text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <h5 class="font-bold text-gray-800 text-lg">PREMIUM</h5>
+                    <p class="text-2xl font-bold text-gray-800 my-2">Rp 199.000</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>500 Link Tamu</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Aktif 60 Hari</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Semua Fitur</li>
+                    </ul>
+                </div>
+                
+                <!-- UNLIMITED -->
+                <div class="border-2 border-purple-200 rounded-2xl p-6 hover:border-purple-500 transition cursor-pointer upgrade-option" data-package="unlimited" data-price="499000" onclick="selectUpgradePackage(this)">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-infinity text-purple-600 text-xl"></i>
+                        </div>
+                        <div class="w-6 h-6 border-2 border-gray-300 rounded-full upgrade-check hidden">
+                            <i class="fas fa-check text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <h5 class="font-bold text-gray-800 text-lg">UNLIMITED</h5>
+                    <p class="text-2xl font-bold text-gray-800 my-2">Rp 499.000</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Unlimited Link</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Aktif 1 Tahun</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Info -->
+        <div id="paymentInfo" class="p-6 bg-gray-50 border-t hidden">
+            <h4 class="font-bold text-gray-800 mb-4">Informasi Pembayaran:</h4>
+            
+            <div class="bg-white rounded-xl p-4 mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-gray-600">Paket Dipilih:</span>
+                    <span class="font-bold text-islamic-green" id="selectedPackageName">-</span>
+                </div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-gray-600">Total Pembayaran:</span>
+                    <span class="font-bold text-2xl text-islamic-green" id="selectedPackagePrice">-</span>
+                </div>
+            </div>
+            
+            <div class="bg-islamic-gold/10 rounded-xl p-4 mb-4">
+                <h5 class="font-bold text-islamic-brown mb-2">Transfer ke:</h5>
+                <div class="space-y-2 text-sm">
+                    <p><strong>Bank BCA:</strong> 1234567890</p>
+                    <p><strong>A/N:</strong> PT NikahKu Digital</p>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-500 mb-4">
+                <i class="fas fa-info-circle mr-1"></i>
+                Setelah transfer, klik tombol "Konfirmasi Pembayaran" dan upload bukti transfer. 
+                Paket akan aktif dalam 1x24 jam setelah verifikasi.
+            </p>
+            
+            <div class="flex gap-3">
+                <button onclick="closeUpgradeModal()" class="flex-1 border-2 border-gray-300 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50 transition">
+                    Batal
+                </button>
+                <button onclick="processUpgrade()" class="flex-1 bg-islamic-green text-white py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                    <i class="fas fa-credit-card mr-2"></i>Konfirmasi Pembayaran
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Confirmation Modal -->
+<div id="paymentConfirmModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-islamic-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-receipt text-islamic-gold text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">Konfirmasi Pembayaran</h3>
+            <p class="text-gray-600 text-sm">Upload bukti transfer Anda</p>
+        </div>
+        
+        <form id="paymentConfirmForm" class="space-y-4">
+            <input type="hidden" id="confirmInvitationId">
+            <input type="hidden" id="confirmPackage">
+            <input type="hidden" id="confirmAmount">
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-1">Nama Pengirim</label>
+                <input type="text" id="senderName" required
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none"
+                    placeholder="Nama sesuai rekening">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-1">Bank Pengirim</label>
+                <select id="senderBank" required
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none">
+                    <option value="">Pilih Bank</option>
+                    <option value="BCA">BCA</option>
+                    <option value="Mandiri">Mandiri</option>
+                    <option value="BNI">BNI</option>
+                    <option value="BRI">BRI</option>
+                    <option value="Other">Lainnya</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-1">Bukti Transfer</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center cursor-pointer hover:border-islamic-green transition" onclick="document.getElementById('paymentProof').click()">
+                    <input type="file" id="paymentProof" accept="image/*" class="hidden" required onchange="previewPaymentProof(this)">
+                    <div id="proofPreview" class="hidden mb-2">
+                        <img src="" alt="Preview" class="max-h-32 mx-auto rounded-lg">
+                    </div>
+                    <div id="proofPlaceholder">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-500 text-sm">Klik untuk upload bukti transfer</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-3 pt-4">
+                <button type="button" onclick="closePaymentConfirmModal()" class="flex-1 border-2 border-gray-300 text-gray-600 py-3 rounded-xl font-medium hover:bg-gray-50 transition">
+                    Batal
+                </button>
+                <button type="submit" class="flex-1 bg-islamic-green text-white py-3 rounded-xl font-medium hover:bg-islamic-green-light transition">
+                    <i class="fas fa-paper-plane mr-2"></i>Kirim
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Quota Warning Alert (shown in dashboard) -->
+<div id="quotaWarningAlert" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded-xl shadow-lg z-40 max-w-md">
+    <div class="flex items-start gap-3">
+        <i class="fas fa-exclamation-triangle text-xl"></i>
+        <div>
+            <p class="font-semibold">Kuota Link Hampir Habis!</p>
+            <p class="text-sm">Tersisa <span id="quotaRemaining">3</span> link. <a href="#" onclick="showUpgradeModal()" class="underline font-medium">Upgrade sekarang</a></p>
+        </div>
+        <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-yellow-600 hover:text-yellow-800">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+</body>
+</html>

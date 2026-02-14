@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | NikahKu</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'islamic-gold': '#D4AF37',
+                        'islamic-green': '#1B4332',
+                        'islamic-green-light': '#2D6A4F',
+                        'islamic-cream': '#FDF8F3',
+                    },
+                    fontFamily: {
+                        'primary': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-primary">
+    
+    <!-- Admin Sidebar -->
+    <aside id="adminSidebar" class="fixed left-0 top-0 h-full w-64 bg-gray-900 text-white transform -translate-x-full lg:translate-x-0 transition-transform z-40">
+        <div class="p-6 border-b border-gray-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-islamic-gold rounded-lg flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-gray-900"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">NikahKu</span>
+                    <p class="text-xs text-gray-400">Super Admin</p>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="p-4 space-y-2">
+            <a href="#" onclick="showAdminSection('dashboard')" class="admin-nav-item active flex items-center space-x-3 px-4 py-3 rounded-xl bg-islamic-gold/20 text-islamic-gold">
+                <i class="fas fa-chart-pie w-5"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" onclick="showAdminSection('users')" class="admin-nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-users w-5"></i>
+                <span>Manajemen User</span>
+            </a>
+            <a href="#" onclick="showAdminSection('packages')" class="admin-nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-box w-5"></i>
+                <span>Paket & Harga</span>
+            </a>
+            <a href="#" onclick="showAdminSection('invitations')" class="admin-nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-envelope w-5"></i>
+                <span>Semua Undangan</span>
+            </a>
+            <a href="#" onclick="showAdminSection('transactions')" class="admin-nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-credit-card w-5"></i>
+                <span>Transaksi</span>
+            </a>
+            <a href="#" onclick="showAdminSection('settings')" class="admin-nav-item flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-cog w-5"></i>
+                <span>Pengaturan</span>
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+            <button onclick="adminLogout()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 transition">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="lg:ml-64 min-h-screen">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button onclick="toggleAdminSidebar()" class="lg:hidden text-gray-600">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                
+                <h1 class="text-xl font-bold text-gray-800" id="adminPageTitle">Dashboard</h1>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500">Super Admin</span>
+                    <div class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="p-6">
+            
+            <!-- =====================================================
+                 ADMIN DASHBOARD
+                 ===================================================== -->
+            <section id="admin-section-dashboard" class="admin-section">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Users</p>
+                                <p class="text-3xl font-bold text-gray-800" id="adminTotalUsers">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-users text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i>12% dari bulan lalu</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Undangan</p>
+                                <p class="text-3xl font-bold text-gray-800" id="adminTotalInvitations">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i>8% dari bulan lalu</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">User Premium</p>
+                                <p class="text-3xl font-bold text-gray-800" id="adminPremiumUsers">0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-islamic-gold/20 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-crown text-2xl text-islamic-gold"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i>25% dari bulan lalu</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Pendapatan Bulan Ini</p>
+                                <p class="text-3xl font-bold text-gray-800" id="adminRevenue">Rp 0</p>
+                            </div>
+                            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-wallet text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i>18% dari bulan lalu</p>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">User Terbaru</h3>
+                        <div class="space-y-4" id="recentUsersAdmin">
+                            <p class="text-gray-500 text-center py-4">Memuat data...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Transaksi Terbaru</h3>
+                        <div class="space-y-4" id="recentTransactionsAdmin">
+                            <p class="text-gray-500 text-center py-4">Belum ada transaksi</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 USER MANAGEMENT
+                 ===================================================== -->
+            <section id="admin-section-users" class="admin-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <h3 class="text-lg font-bold text-gray-800">Manajemen User</h3>
+                        <div class="flex gap-3">
+                            <div class="relative">
+                                <input type="text" id="searchUser" placeholder="Cari user..." 
+                                    class="pl-10 pr-4 py-2 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none"
+                                    onkeyup="filterUsers()">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                            <select id="filterUserPlan" onchange="filterUsers()" class="px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                <option value="">Semua Paket</option>
+                                <option value="free">Free</option>
+                                <option value="basic">Basic</option>
+                                <option value="premium">Premium</option>
+                                <option value="unlimited">Unlimited</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Paket</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Link Digunakan</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Undangan</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Memuat data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 PACKAGE MANAGEMENT
+                 ===================================================== -->
+            <section id="admin-section-packages" class="admin-section hidden">
+                <div class="mb-6 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Paket & Harga</h2>
+                    <button onclick="openAddPackageModal()" class="bg-islamic-green text-white px-6 py-2 rounded-xl hover:bg-islamic-green-light transition">
+                        <i class="fas fa-plus mr-2"></i>Tambah Paket
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="packagesGrid">
+                    <!-- Packages will be loaded dynamically -->
+                </div>
+                
+                <!-- Package Settings -->
+                <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6">Pengaturan Paket</h3>
+                    
+                    <form id="packageSettingsForm" class="space-y-6">
+                        <!-- Free Package -->
+                        <div class="border rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                    <span class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-gift text-gray-600"></i>
+                                    </span>
+                                    Paket FREE
+                                </h4>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Gratis</span>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Link Generate</label>
+                                    <input type="number" id="freeMaxLinks" value="10" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Undangan</label>
+                                    <input type="number" id="freeMaxInvitations" value="1" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Fitur</label>
+                                    <input type="text" id="freeFeatures" value="Template Basic, Tanpa Musik"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Basic Package -->
+                        <div class="border rounded-xl p-6 border-blue-200 bg-blue-50/50">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                    <span class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-star text-white"></i>
+                                    </span>
+                                    Paket BASIC
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-500">Rp</span>
+                                    <input type="number" id="basicPrice" value="99000" min="0"
+                                        class="w-32 px-3 py-1 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none text-right font-bold">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Link Generate</label>
+                                    <input type="number" id="basicMaxLinks" value="100" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Undangan</label>
+                                    <input type="number" id="basicMaxInvitations" value="1" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Durasi (hari)</label>
+                                    <input type="number" id="basicDuration" value="30" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Premium Package -->
+                        <div class="border rounded-xl p-6 border-islamic-gold bg-islamic-gold/5">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                    <span class="w-8 h-8 bg-islamic-gold rounded-full flex items-center justify-center">
+                                        <i class="fas fa-crown text-white"></i>
+                                    </span>
+                                    Paket PREMIUM
+                                    <span class="px-2 py-0.5 bg-islamic-gold text-white text-xs rounded-full">Popular</span>
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-500">Rp</span>
+                                    <input type="number" id="premiumPrice" value="199000" min="0"
+                                        class="w-32 px-3 py-1 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none text-right font-bold">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Link Generate</label>
+                                    <input type="number" id="premiumMaxLinks" value="500" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Undangan</label>
+                                    <input type="number" id="premiumMaxInvitations" value="3" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Durasi (hari)</label>
+                                    <input type="number" id="premiumDuration" value="60" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Unlimited Package -->
+                        <div class="border rounded-xl p-6 border-purple-200 bg-purple-50/50">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                    <span class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-infinity text-white"></i>
+                                    </span>
+                                    Paket UNLIMITED
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-500">Rp</span>
+                                    <input type="number" id="unlimitedPrice" value="499000" min="0"
+                                        class="w-32 px-3 py-1 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none text-right font-bold">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Link Generate</label>
+                                    <input type="text" value="Unlimited" disabled
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-100">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Maks. Undangan</label>
+                                    <input type="text" value="Unlimited" disabled
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-100">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Durasi (hari)</label>
+                                    <input type="number" id="unlimitedDuration" value="365" min="1"
+                                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-islamic-green text-white px-8 py-3 rounded-xl font-semibold hover:bg-islamic-green-light transition">
+                                <i class="fas fa-save mr-2"></i>Simpan Pengaturan Paket
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 ALL INVITATIONS
+                 ===================================================== -->
+            <section id="admin-section-invitations" class="admin-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h3 class="text-lg font-bold text-gray-800">Semua Undangan</h3>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Mempelai</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Pemilik</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Tanggal Acara</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Tamu</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allInvitationsTableBody" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Memuat data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 TRANSACTIONS
+                 ===================================================== -->
+            <section id="admin-section-transactions" class="admin-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-800">Riwayat Transaksi</h3>
+                        <div class="flex gap-3">
+                            <select id="filterTransactionStatus" class="px-4 py-2 rounded-xl border-2 border-gray-200 outline-none">
+                                <option value="">Semua Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="expired">Expired</option>
+                            </select>
+                            <input type="month" id="filterTransactionMonth" class="px-4 py-2 rounded-xl border-2 border-gray-200 outline-none">
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ID Transaksi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Paket</th>
+                                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Jumlah</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Tanggal</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">Belum ada transaksi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- =====================================================
+                 ADMIN SETTINGS
+                 ===================================================== -->
+            <section id="admin-section-settings" class="admin-section hidden">
+                <div class="max-w-2xl">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Admin</h2>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                        <h3 class="font-bold text-gray-800 mb-4">Informasi Aplikasi</h3>
+                        <form id="appSettingsForm" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Nama Aplikasi</label>
+                                <input type="text" id="appName" value="NikahKu"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">WhatsApp Admin</label>
+                                <input type="tel" id="adminWhatsapp" placeholder="628xxxxxxxxxx"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Email Admin</label>
+                                <input type="email" id="adminEmail" placeholder="admin@nikahku.com"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <button type="submit" class="bg-islamic-green text-white px-6 py-2 rounded-lg hover:bg-islamic-green-light transition">
+                                <i class="fas fa-save mr-2"></i>Simpan
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="font-bold text-gray-800 mb-4">Pengaturan Pembayaran</h3>
+                        <form id="paymentSettingsForm" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Bank</label>
+                                <input type="text" id="bankName" placeholder="BCA / Mandiri / BNI"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Nomor Rekening</label>
+                                <input type="text" id="bankAccount" placeholder="1234567890"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Atas Nama</label>
+                                <input type="text" id="bankAccountName" placeholder="Nama pemilik rekening"
+                                    class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                            </div>
+                            <button type="submit" class="bg-islamic-green text-white px-6 py-2 rounded-lg hover:bg-islamic-green-light transition">
+                                <i class="fas fa-save mr-2"></i>Simpan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+    
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Edit User</h3>
+                <button onclick="closeEditUserModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="editUserForm" class="space-y-4">
+                <input type="hidden" id="editUserId">
+                <div>
+                    <label class="block text-gray-600 text-sm mb-1">Nama</label>
+                    <input type="text" id="editUserName" required
+                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm mb-1">Email</label>
+                    <input type="email" id="editUserEmail" disabled
+                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-100">
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm mb-1">Paket</label>
+                    <select id="editUserPlan" class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                        <option value="free">Free</option>
+                        <option value="basic">Basic</option>
+                        <option value="premium">Premium</option>
+                        <option value="unlimited">Unlimited</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm mb-1">Maks. Link</label>
+                    <input type="number" id="editUserMaxLinks" min="1"
+                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm mb-1">Link Digunakan</label>
+                    <input type="number" id="editUserLinksUsed" min="0"
+                        class="w-full px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-islamic-green outline-none">
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeEditUserModal()" class="flex-1 border-2 border-gray-300 text-gray-600 py-2 rounded-xl hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="flex-1 bg-islamic-green text-white py-2 rounded-xl hover:bg-islamic-green-light transition">
+                        <i class="fas fa-save mr-2"></i>Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="adminToast" class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg hidden z-50 flex items-center gap-3">
+        <i class="fas fa-check-circle text-xl"></i>
+        <span id="adminToastMessage">Berhasil!</span>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

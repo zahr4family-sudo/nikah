@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan | NikahKu</title>
+    
+    <!-- Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Undangan Pernikahan">
+    <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami">
+    <meta property="og:type" content="website">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'islamic-gold': '#D4AF37',
+                        'islamic-gold-light': '#F4E4BA',
+                        'islamic-green': '#1B4332',
+                        'islamic-green-light': '#2D6A4F',
+                        'islamic-cream': '#FDF8F3',
+                        'islamic-brown': '#8B4513'
+                    },
+                    fontFamily: {
+                        'arabic': ['Scheherazade New', 'Amiri', 'serif'],
+                        'primary': ['Poppins', 'sans-serif'],
+                        'script': ['Great Vibes', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Styles */
+        .islamic-pattern-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .ornament-corner {
+            background: linear-gradient(135deg, transparent 50%, rgba(212, 175, 55, 0.1) 50%);
+        }
+        
+        /* Envelope Animation */
+        .envelope-container {
+            perspective: 1000px;
+        }
+        
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+        
+        .envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: transform 0.6s ease;
+            transform-origin: bottom center;
+        }
+        
+        .envelope.opened .envelope-front {
+            transform: rotateX(-180deg);
+        }
+        
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #FDF8F3;
+            border-radius: 10px;
+            border: 2px solid #D4AF37;
+        }
+        
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(180deg, #1B4332 0%, #2D6A4F 100%);
+            border-radius: 10px 10px 0 0;
+            transform-origin: top center;
+            z-index: 3;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transition: transform 0.6s ease 0.3s;
+        }
+        
+        .envelope.opened .envelope-flap {
+            transform: rotateX(180deg);
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Fade up animation */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-up {
+            animation: fadeUp 0.8s ease forwards;
+        }
+        
+        /* Decorative borders */
+        .decorative-border {
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #D4AF37, #1B4332, #D4AF37) 1;
+        }
+        
+        /* Hide scrollbar but allow scroll */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Section transitions */
+        section {
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Gold shimmer effect */
+        .gold-shimmer {
+            background: linear-gradient(90deg, #D4AF37, #F4E4BA, #D4AF37);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Countdown flip animation */
+        .countdown-item {
+            background: linear-gradient(180deg, #1B4332 0%, #2D6A4F 100%);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 70px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Music button pulse */
+        .music-btn.playing {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+        }
+    </style>
+</head>
+<body class="bg-islamic-cream font-primary overflow-x-hidden">
+    
+    <!-- Audio Player (Hidden) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- Ganti dengan file nasyid/musik islami Anda -->
+    </audio>
+    
+    <!-- Music Control Button -->
+    <button id="musicBtn" onclick="toggleMusic()" class="music-btn fixed bottom-6 right-6 z-50 w-14 h-14 bg-islamic-gold rounded-full shadow-lg flex items-center justify-center text-white hover:bg-islamic-brown transition">
+        <i class="fas fa-volume-mute text-xl" id="musicIcon"></i>
+    </button>
+    
+    <!-- =====================================================
+         COVER SECTION - Envelope Animation
+         ===================================================== -->
+    <section id="coverSection" class="min-h-screen flex items-center justify-center bg-gradient-to-b from-islamic-green via-islamic-green-light to-islamic-green relative overflow-hidden">
+        <!-- Islamic Pattern Overlay -->
+        <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute top-10 left-10 w-32 h-32 border border-islamic-gold/30 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 border border-islamic-gold/20 rounded-full animate-pulse"></div>
+        <div class="absolute top-1/4 right-20 w-20 h-20 border border-islamic-gold/40 rotate-45"></div>
+        
+        <!-- Main Content -->
+        <div class="text-center text-white z-10 px-4">
+            <!-- Bismillah -->
+            <p class="font-arabic text-2xl md:text-3xl text-islamic-gold mb-6 float-animation" dir="rtl">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+            </p>
+            
+            <p class="text-white/80 text-lg mb-2">The Wedding of</p>
+            
+            <!-- Couple Names -->
+            <h1 class="text-4xl md:text-6xl font-script text-white mb-2" id="coverGroomName">Ahmad</h1>
+            <p class="text-islamic-gold text-3xl my-2">&</p>
+            <h1 class="text-4xl md:text-6xl font-script text-white mb-8" id="coverBrideName">Fatimah</h1>
+            
+            <!-- Kepada -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-sm mx-auto mb-8 border border-islamic-gold/30">
+                <p class="text-white/70 text-sm mb-1">Kepada Yth:</p>
+                <p class="text-xl font-semibold text-islamic-gold" id="guestNameDisplay">Bapak/Ibu/Saudara/i</p>
+                <p class="text-white/60 text-sm mt-2">Di Tempat</p>
+            </div>
+            
+            <!-- Open Invitation Button -->
+            <button onclick="openInvitation()" class="bg-islamic-gold hover:bg-white text-islamic-green px-8 py-4 rounded-full font-semibold text-lg transition transform hover:scale-105 shadow-xl">
+                <i class="fas fa-envelope-open mr-2"></i>Buka Undangan
+            </button>
+            
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 animate-bounce">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </div>
+    </section>
+    
+    <!-- =====================================================
+         MAIN INVITATION CONTENT (Initially Hidden)
+         ===================================================== -->
+    <div id="mainContent" class="hidden">
+        
+        <!-- =====================================================
+             QUOTE / AYAT SECTION
+             ===================================================== -->
+        <section class="min-h-screen flex items-center justify-center bg-islamic-cream relative py-20">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-5"></div>
+            
+            <!-- Ornament Corners -->
+            <div class="absolute top-0 left-0 w-40 h-40">
+                <svg viewBox="0 0 100 100" class="w-full h-full text-islamic-gold/20">
+                    <path d="M0,0 L100,0 L100,20 Q50,20 50,50 Q50,80 0,80 Z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="absolute bottom-0 right-0 w-40 h-40 rotate-180">
+                <svg viewBox="0 0 100 100" class="w-full h-full text-islamic-gold/20">
+                    <path d="M0,0 L100,0 L100,20 Q50,20 50,50 Q50,80 0,80 Z" fill="currentColor"/>
+                </svg>
+            </div>
+            
+            <div class="max-w-3xl mx-auto px-6 text-center" data-aos="fade-up">
+                <!-- Decorative Icon -->
+                <div class="w-20 h-20 mx-auto mb-8 relative">
+                    <div class="absolute inset-0 bg-islamic-gold/20 rounded-full animate-ping"></div>
+                    <div class="relative w-full h-full bg-gradient-to-br from-islamic-gold to-islamic-brown rounded-full flex items-center justify-center">
+                        <i class="fas fa-quran text-white text-3xl"></i>
+                    </div>
+                </div>
+                
+                <!-- Arabic Text -->
+                <p class="font-arabic text-2xl md:text-3xl text-islamic-green leading-loose mb-6" dir="rtl">
+                    وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+                </p>
+                
+                <!-- Translation -->
+                <p class="text-gray-600 text-lg italic leading-relaxed mb-4">
+                    "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+                </p>
+                
+                <p class="text-islamic-gold font-semibold text-lg">
+                    — QS. Ar-Rum: 21 —
+                </p>
+                
+                <!-- Decorative Line -->
+                <div class="flex items-center justify-center gap-4 mt-8">
+                    <div class="w-20 h-0.5 bg-gradient-to-r from-transparent to-islamic-gold"></div>
+                    <i class="fas fa-star text-islamic-gold"></i>
+                    <div class="w-20 h-0.5 bg-gradient-to-l from-transparent to-islamic-gold"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             COUPLE SECTION
+             ===================================================== -->
+        <section class="min-h-screen flex items-center bg-gradient-to-b from-islamic-green to-islamic-green-light relative py-20 overflow-hidden">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+            
+            <div class="max-w-6xl mx-auto px-6 w-full">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <p class="font-arabic text-xl text-islamic-gold mb-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mempelai</h2>
+                    <p class="text-white/70">Assalamualaikum Warahmatullahi Wabarakatuh</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <!-- Groom -->
+                    <div class="text-center" data-aos="fade-right" data-aos-delay="200">
+                        <div class="relative inline-block mb-6">
+                            <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-islamic-gold shadow-2xl mx-auto">
+                                <img id="groomPhoto" src="https://ui-avatars.com/api/?name=Groom&background=1B4332&color=fff&size=256" alt="Mempelai Pria" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-islamic-gold text-islamic-green px-4 py-1 rounded-full text-sm font-semibold">
+                                Mempelai Pria
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-3xl md:text-4xl font-script text-white mb-2" id="groomFullName">Ahmad Fauzan</h3>
+                        <p class="text-islamic-gold text-lg mb-4" id="groomChildInfo">Putra Pertama dari</p>
+                        <p class="text-white/80" id="groomParents">
+                            Bapak H. Muhammad & Ibu Hj. Siti Aminah
+                        </p>
+                        
+                        <!-- Social Links -->
+                        <div class="flex justify-center gap-3 mt-4">
+                            <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-islamic-gold hover:text-islamic-green transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="hidden md:flex items-center justify-center">
+                        <div class="text-6xl font-script text-islamic-gold">&</div>
+                    </div>
+                    <div class="md:hidden text-center my-4">
+                        <div class="text-5xl font-script text-islamic-gold">&</div>
+                    </div>
+                    
+                    <!-- Bride -->
+                    <div class="text-center md:-mt-0" data-aos="fade-left" data-aos-delay="400">
+                        <div class="relative inline-block mb-6">
+                            <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-islamic-gold shadow-2xl mx-auto">
+                                <img id="bridePhoto" src="https://ui-avatars.com/api/?name=Bride&background=D4AF37&color=1B4332&size=256" alt="Mempelai Wanita" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-islamic-gold text-islamic-green px-4 py-1 rounded-full text-sm font-semibold">
+                                Mempelai Wanita
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-3xl md:text-4xl font-script text-white mb-2" id="brideFullName">Fatimah Az-Zahra</h3>
+                        <p class="text-islamic-gold text-lg mb-4" id="brideChildInfo">Putri Kedua dari</p>
+                        <p class="text-white/80" id="brideParents">
+                            Bapak H. Abdullah & Ibu Hj. Khadijah
+                        </p>
+                        
+                        <!-- Social Links -->
+                        <div class="flex justify-center gap-3 mt-4">
+                            <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-islamic-gold hover:text-islamic-green transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             COUNTDOWN & EVENT SECTION
+             ===================================================== -->
+        <section class="min-h-screen flex items-center bg-islamic-cream relative py-20">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-5"></div>
+            
+            <div class="max-w-4xl mx-auto px-6 w-full">
+                <!-- Countdown Timer -->
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-islamic-green mb-4">Menghitung Hari</h2>
+                    <p class="text-gray-600 mb-8">Menuju hari bahagia kami</p>
+                    
+                    <div class="flex justify-center gap-4 flex-wrap" id="countdown">
+                        <div class="countdown-item text-center">
+                            <span class="text-3xl md:text-4xl font-bold text-white" id="days">00</span>
+                            <p class="text-islamic-gold text-sm mt-1">Hari</p>
+                        </div>
+                        <div class="countdown-item text-center">
+                            <span class="text-3xl md:text-4xl font-bold text-white" id="hours">00</span>
+                            <p class="text-islamic-gold text-sm mt-1">Jam</p>
+                        </div>
+                        <div class="countdown-item text-center">
+                            <span class="text-3xl md:text-4xl font-bold text-white" id="minutes">00</span>
+                            <p class="text-islamic-gold text-sm mt-1">Menit</p>
+                        </div>
+                        <div class="countdown-item text-center">
+                            <span class="text-3xl md:text-4xl font-bold text-white" id="seconds">00</span>
+                            <p class="text-islamic-gold text-sm mt-1">Detik</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Event Cards -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Akad Nikah -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden" data-aos="fade-right" data-aos-delay="200">
+                        <div class="bg-gradient-to-r from-islamic-green to-islamic-green-light p-6 text-center">
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-ring text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Akad Nikah</h3>
+                        </div>
+                        <div class="p-6 text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-calendar-alt text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-800 font-semibold" id="akadDateDisplay">Minggu, 15 Juni 2025</p>
+                            </div>
+                            <div class="mb-4">
+                                <i class="fas fa-clock text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-800 font-semibold" id="akadTimeDisplay">08:00 WIB - Selesai</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-map-marker-alt text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-600" id="akadLocationDisplay">
+                                    Masjid Al-Ikhlas<br>
+                                    Jl. Mawar No. 123, Jakarta Selatan
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resepsi -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden" data-aos="fade-left" data-aos-delay="400">
+                        <div class="bg-gradient-to-r from-islamic-gold to-islamic-brown p-6 text-center">
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-glass-cheers text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Resepsi</h3>
+                        </div>
+                        <div class="p-6 text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-calendar-alt text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-800 font-semibold" id="resepsiDateDisplay">Minggu, 15 Juni 2025</p>
+                            </div>
+                            <div class="mb-4">
+                                <i class="fas fa-clock text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-800 font-semibold" id="resepsiTimeDisplay">11:00 - 14:00 WIB</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-map-marker-alt text-islamic-gold text-xl mb-2"></i>
+                                <p class="text-gray-600" id="resepsiLocationDisplay">
+                                    Gedung Serbaguna Mawar<br>
+                                    Jl. Mawar No. 123, Jakarta Selatan
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Maps Button -->
+                <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="600">
+                    <a id="mapsButton" href="#" target="_blank" class="inline-flex items-center gap-2 bg-islamic-green text-white px-8 py-4 rounded-full font-semibold hover:bg-islamic-green-light transition transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Buka Google Maps
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             GALLERY SECTION
+             ===================================================== -->
+        <section class="py-20 bg-gradient-to-b from-islamic-green to-islamic-green-light relative">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+            
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Galeri Foto</h2>
+                    <p class="text-white/70">Momen-momen indah kami</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="galleryGrid">
+                    <!-- Gallery items will be loaded dynamically -->
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400" alt="Gallery 1" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400" alt="Gallery 2" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="300">
+                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400" alt="Gallery 3" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
+                        <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=400" alt="Gallery 4" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="500">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400" alt="Gallery 5" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="aspect-square bg-white/10 rounded-2xl overflow-hidden" data-aos="zoom-in" data-aos-delay="600">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400" alt="Gallery 6" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             RSVP SECTION
+             ===================================================== -->
+        <section class="py-20 bg-islamic-cream relative">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-5"></div>
+            
+            <div class="max-w-2xl mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-islamic-green mb-4">Konfirmasi Kehadiran</h2>
+                    <p class="text-gray-600">Mohon konfirmasi kehadiran Anda</p>
+                </div>
+                
+                <div class="bg-white rounded-3xl shadow-xl p-8" data-aos="fade-up" data-aos-delay="200">
+                    <form id="rsvpForm" class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                            <input type="text" id="rsvpName" required
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none transition"
+                                placeholder="Masukkan nama Anda">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Konfirmasi Kehadiran</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="relative">
+                                    <input type="radio" name="attendance" value="hadir" class="peer hidden" required>
+                                    <div class="p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer peer-checked:border-islamic-green peer-checked:bg-islamic-green/10 transition">
+                                        <i class="fas fa-check-circle text-2xl text-gray-400 peer-checked:text-islamic-green mb-2"></i>
+                                        <p class="font-medium">Hadir</p>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="attendance" value="tidak" class="peer hidden">
+                                    <div class="p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-50 transition">
+                                        <i class="fas fa-times-circle text-2xl text-gray-400 peer-checked:text-red-500 mb-2"></i>
+                                        <p class="font-medium">Tidak Hadir</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Jumlah Tamu</label>
+                            <select id="guestCount" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none transition">
+                                <option value="1">1 Orang</option>
+                                <option value="2">2 Orang</option>
+                                <option value="3">3 Orang</option>
+                                <option value="4">4 Orang</option>
+                                <option value="5">5 Orang</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Ucapan & Doa</label>
+                            <textarea id="rsvpMessage" rows="4"
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-islamic-green outline-none transition resize-none"
+                                placeholder="Tuliskan ucapan dan doa untuk kedua mempelai..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-islamic-green to-islamic-green-light text-white py-4 rounded-xl font-semibold hover:shadow-lg transition transform hover:scale-[1.02]">
+                            <i class="fas fa-paper-plane mr-2"></i>Kirim Konfirmasi
+                        </button>
+                    </form>
+                    
+                    <!-- Success Message (Hidden) -->
+                    <div id="rsvpSuccess" class="hidden text-center py-8">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check text-green-500 text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-islamic-green mb-2">Terima Kasih!</h3>
+                        <p class="text-gray-600">Konfirmasi kehadiran Anda telah kami terima.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             WISHES SECTION
+             ===================================================== -->
+        <section class="py-20 bg-gradient-to-b from-islamic-green-light to-islamic-green relative">
+            <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+            
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ucapan & Doa</h2>
+                    <p class="text-white/70">Kirimkan doa dan harapan terbaik untuk kami</p>
+                </div>
+                
+                <!-- Wishes List -->
+                <div class="space-y-4 max-h-96 overflow-y-auto hide-scrollbar" id="wishesList">
+                    <!-- Wishes will be loaded dynamically -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20" data-aos="fade-up">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-islamic-gold rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-islamic-green font-bold">A</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-white">Ahmad Rizki</p>
+                                <p class="text-white/70 mt-1">Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fi khair. Semoga menjadi keluarga sakinah, mawaddah, warahmah. Aamiin 🤲</p>
+                                <p class="text-white/50 text-sm mt-2">2 jam yang lalu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =====================================================
+             FOOTER
+             ===================================================== -->
+        <footer class="py-12 bg-islamic-green text-center">
+            <div class="max-w-4xl mx-auto px-6">
+                <!-- Special Message -->
+                <div class="mb-8" id="specialMessageSection">
+                    <p class="text-white/80 text-lg italic" id="specialMessageDisplay">
+                        "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami."
+                    </p>
+                </div>
+                
+                <!-- Couple Names -->
+                <div class="mb-8">
+                    <p class="text-2xl md:text-3xl font-script text-white">
+                        <span id="footerGroomName">Ahmad</span> & <span id="footerBrideName">Fatimah</span>
+                    </p>
+                </div>
+                
+                <!-- Wassalam -->
+                <p class="text-islamic-gold font-arabic text-xl mb-8">وَالسَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</p>
+                
+                <!-- Credit -->
+                <div class="border-t border-white/20 pt-8">
+                    <p class="text-white/50 text-sm">
+                        Made with ❤️ by <a href="index.html" class="text-islamic-gold hover:underline">NikahKu</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+        
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/invitation.js"></script>
+</body>
+</html>

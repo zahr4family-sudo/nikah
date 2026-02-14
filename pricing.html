@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harga Paket | NikahKu</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'islamic-gold': '#D4AF37',
+                        'islamic-gold-light': '#F4E4BA',
+                        'islamic-green': '#1B4332',
+                        'islamic-green-light': '#2D6A4F',
+                        'islamic-cream': '#FDF8F3',
+                        'islamic-brown': '#8B4513'
+                    },
+                    fontFamily: {
+                        'arabic': ['Amiri', 'serif'],
+                        'primary': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-islamic-cream font-primary">
+    
+    <!-- Islamic Pattern Background -->
+    <div class="islamic-pattern-bg fixed inset-0 opacity-5 pointer-events-none"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-islamic-gold to-islamic-green rounded-full flex items-center justify-center">
+                        <i class="fas fa-mosque text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-islamic-green">NikahKu</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-islamic-green transition">Beranda</a>
+                    <a href="index.html#features" class="text-gray-700 hover:text-islamic-green transition">Fitur</a>
+                    <a href="#pricing" class="text-islamic-green font-medium">Harga</a>
+                    <a href="login.html" class="text-islamic-green hover:text-islamic-gold transition font-medium">Masuk</a>
+                    <a href="register.html" class="bg-islamic-green text-white px-6 py-2 rounded-full hover:bg-islamic-green-light transition">
+                        Daftar Gratis
+                    </a>
+                </div>
+                
+                <button class="md:hidden text-islamic-green" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block text-gray-700">Beranda</a>
+                <a href="index.html#features" class="block text-gray-700">Fitur</a>
+                <a href="#pricing" class="block text-islamic-green font-medium">Harga</a>
+                <a href="login.html" class="block text-islamic-green font-medium">Masuk</a>
+                <a href="register.html" class="block bg-islamic-green text-white px-4 py-2 rounded-lg text-center">Daftar Gratis</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-b from-islamic-green to-islamic-green-light relative overflow-hidden">
+        <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute top-20 left-10 w-32 h-32 border border-islamic-gold/30 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 border border-islamic-gold/20 rounded-full animate-pulse"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <p class="font-arabic text-xl text-islamic-gold mb-4" data-aos="fade-up">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6" data-aos="fade-up" data-aos-delay="100">
+                Pilih Paket Terbaik untuk <br>
+                <span class="text-islamic-gold">Undangan Pernikahanmu</span>
+            </h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                Satu undangan untuk satu pasangan pengantin. Pilih paket sesuai kebutuhanmu dan buat undangan impian!
+            </p>
+            
+            <!-- Highlight Box -->
+            <div class="mt-8 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-gift text-islamic-gold"></i>
+                <span class="text-white">Mulai GRATIS dengan 10 link undangan!</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green mb-4">
+                    Paket Undangan Digital
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Setiap paket berlaku untuk <strong>1 undangan pernikahan</strong> (1 pasangan pengantin). 
+                    Kuota link untuk mengundang tamu secara personal.
+                </p>
+            </div>
+            
+            <!-- Pricing Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- FREE Package -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-gift text-3xl text-gray-500"></i>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">FREE</h3>
+                        <p class="text-gray-500 mb-6">Untuk mencoba</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-800">Rp 0</span>
+                            <span class="text-gray-500">/undangan</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span><strong>10</strong> Link Tamu Personal</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span><strong>1</strong> Undangan (1 Pengantin)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Template Basic</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>RSVP Online</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400">
+                                <i class="fas fa-times"></i>
+                                <span>Musik Latar</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400">
+                                <i class="fas fa-times"></i>
+                                <span>Galeri Foto</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Aktif <strong>7 Hari</strong></span>
+                            </li>
+                        </ul>
+                        
+                        <a href="register.html" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+                            Mulai Gratis
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- BASIC Package -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-star text-3xl text-blue-500"></i>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">BASIC</h3>
+                        <p class="text-gray-500 mb-6">Untuk pernikahan intimate</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-800">Rp 99K</span>
+                            <span class="text-gray-500">/undangan</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span><strong>100</strong> Link Tamu Personal</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span><strong>1</strong> Undangan (1 Pengantin)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Semua Template</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>RSVP Online</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Musik Latar</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Galeri Foto (6 Foto)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Aktif <strong>30 Hari</strong></span>
+                            </li>
+                        </ul>
+                        
+                        <a href="register.html?plan=basic" class="block w-full text-center bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition">
+                            Pilih Basic
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PREMIUM Package (Popular) -->
+                <div class="bg-gradient-to-b from-islamic-green to-islamic-green-light rounded-3xl shadow-2xl overflow-hidden transform hover:-translate-y-2 transition relative" data-aos="fade-up" data-aos-delay="300">
+                    <!-- Popular Badge -->
+                    <div class="absolute top-4 right-4 bg-islamic-gold text-islamic-green text-xs font-bold px-3 py-1 rounded-full">
+                        POPULER
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-islamic-gold/20 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-crown text-3xl text-islamic-gold"></i>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-white mb-2">PREMIUM</h3>
+                        <p class="text-white/70 mb-6">Untuk pernikahan besar</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-white">Rp 199K</span>
+                            <span class="text-white/70">/undangan</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span><strong>500</strong> Link Tamu Personal</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span><strong>1</strong> Undangan (1 Pengantin)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>Semua Template Premium</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>RSVP + Ucapan</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>Musik Latar Custom</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>Galeri Foto (12 Foto)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>Aktif <strong>60 Hari</strong></span>
+                            </li>
+                            <li class="flex items-center gap-3 text-white">
+                                <i class="fas fa-check text-islamic-gold"></i>
+                                <span>Countdown Timer</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="register.html?plan=premium" class="block w-full text-center bg-islamic-gold text-islamic-green py-3 rounded-xl font-semibold hover:bg-white transition">
+                            Pilih Premium
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- UNLIMITED Package -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2 border-2 border-purple-200" data-aos="fade-up" data-aos-delay="400">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-infinity text-3xl text-purple-600"></i>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">UNLIMITED</h3>
+                        <p class="text-gray-500 mb-6">Tanpa batas!</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-800">Rp 499K</span>
+                            <span class="text-gray-500">/undangan</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span><strong>Unlimited</strong> Link Tamu</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span><strong>1</strong> Undangan (1 Pengantin)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Semua Fitur Premium</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Video Background</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Custom Domain</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Galeri Unlimited</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Aktif <strong>1 Tahun</strong></span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-600">
+                                <i class="fas fa-check text-purple-500"></i>
+                                <span>Priority Support</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="register.html?plan=unlimited" class="block w-full text-center bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition">
+                            Pilih Unlimited
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Note -->
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <div class="inline-flex items-center gap-2 bg-islamic-gold/10 px-6 py-3 rounded-xl">
+                    <i class="fas fa-info-circle text-islamic-gold"></i>
+                    <span class="text-gray-700">
+                        <strong>Catatan:</strong> Setiap paket berlaku untuk 1 pasangan pengantin. 
+                        Untuk pernikahan berbeda, perlu membeli paket baru.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-islamic-green mb-4">Pertanyaan Umum</h2>
+                <p class="text-gray-600">Hal-hal yang sering ditanyakan tentang layanan kami</p>
+            </div>
+            
+            <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-800">Apa itu "Link Tamu Personal"?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden">
+                        <p class="text-gray-600">
+                            Link tamu personal adalah link undangan unik yang berisi nama tamu. 
+                            Contoh: <code class="bg-gray-100 px-2 py-1 rounded">nikahku.com/ahmad-fatimah?to=Budi</code>. 
+                            Ketika Budi membuka link tersebut, namanya akan muncul di undangan sebagai "Kepada Yth: Budi".
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-800">Apakah paket berlaku untuk banyak pasangan?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden">
+                        <p class="text-gray-600">
+                            <strong>Tidak.</strong> Setiap paket hanya berlaku untuk 1 undangan pernikahan (1 pasangan pengantin). 
+                            Jika Anda ingin membuat undangan untuk pernikahan berbeda, Anda perlu membeli paket baru.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-800">Bagaimana jika kuota link habis?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden">
+                        <p class="text-gray-600">
+                            Anda bisa mengupgrade paket undangan tersebut ke paket yang lebih tinggi. 
+                            Misalnya dari FREE ke BASIC, atau dari BASIC ke PREMIUM. 
+                            Upgrade bisa dilakukan melalui dashboard.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-800">Berapa lama undangan aktif?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden">
+                        <p class="text-gray-600">
+                            Masa aktif tergantung paket: FREE (7 hari), BASIC (30 hari), PREMIUM (60 hari), 
+                            dan UNLIMITED (1 tahun). Setelah masa aktif habis, undangan masih bisa diakses 
+                            namun tidak bisa menambah tamu baru.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-800">Metode pembayaran apa yang tersedia?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden">
+                        <p class="text-gray-600">
+                            Saat ini kami menerima pembayaran melalui Transfer Bank (BCA, Mandiri, BNI, BRI) 
+                            dan E-Wallet (GoPay, OVO, DANA). Pembayaran akan diverifikasi dalam 1x24 jam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-islamic-green to-islamic-green-light relative overflow-hidden">
+        <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-aos="fade-up">
+                Siap Membuat Undangan?
+            </h2>
+            <p class="text-white/80 text-lg mb-8" data-aos="fade-up" data-aos-delay="100">
+                Mulai dengan paket GRATIS dan upgrade kapan saja!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="register.html" class="bg-islamic-gold text-islamic-green px-10 py-4 rounded-full text-lg font-semibold hover:bg-white transition transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-rocket mr-2"></i>Daftar Gratis Sekarang
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank" class="border-2 border-white text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-islamic-green transition">
+                    <i class="fab fa-whatsapp mr-2"></i>Hubungi Kami
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-islamic-green text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-islamic-gold rounded-full flex items-center justify-center">
+                            <i class="fas fa-mosque text-islamic-green"></i>
+                        </div>
+                        <span class="text-xl font-bold">NikahKu</span>
+                    </div>
+                    <p class="text-white/70 text-sm">
+                        Platform undangan digital Islami terpercaya #1 di Indonesia
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Tautan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="index.html" class="hover:text-islamic-gold transition">Beranda</a></li>
+                        <li><a href="index.html#features" class="hover:text-islamic-gold transition">Fitur</a></li>
+                        <li><a href="pricing.html" class="hover:text-islamic-gold transition">Harga</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Bantuan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="#" class="hover:text-islamic-gold transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Hubungi Kami</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 pt-8 text-center text-white/50 text-sm">
+                <p>© 2025 NikahKu. Dibuat dengan ❤️ di Indonesia</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+        
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+        
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            content.classList.toggle('hidden');
+            icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+    </script>
+</body>
+</html>

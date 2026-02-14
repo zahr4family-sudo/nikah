@@ -1,0 +1,182 @@
+/* css/style.css */
+/* =====================================================
+   CUSTOM STYLES FOR NIKAHKU
+   ===================================================== */
+
+/* Islamic Pattern Background */
+.islamic-pattern-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Navigation Active State */
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.admin-nav-item.active {
+    background-color: rgba(212, 175, 55, 0.2);
+    color: #D4AF37;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b8962f;
+}
+
+/* Form Focus Styles */
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.1);
+}
+
+/* Card Hover Effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Loading State */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #D4AF37, #1B4332);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse Animation for Music Button */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.music-pulse::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #D4AF37;
+    animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Radio Button Custom Style */
+input[type="radio"]:checked + div {
+    border-color: #1B4332;
+    background-color: rgba(27, 67, 50, 0.1);
+}
+
+input[type="radio"]:checked + div i {
+    color: #1B4332;
+}
+
+/* Table Styles */
+table {
+    border-collapse: collapse;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: #f9fafb;
+    z-index: 10;
+}
+
+/* Toast Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+#successToast:not(.hidden),
+#adminToast:not(.hidden) {
+    animation: slideIn 0.3s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .countdown-item {
+        min-width: 60px;
+        padding: 10px;
+    }
+    
+    .countdown-item span {
+        font-size: 1.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Digital Islami | Digital Invitation Maker</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'islamic-gold': '#D4AF37',
+                        'islamic-gold-light': '#F4E4BA',
+                        'islamic-green': '#1B4332',
+                        'islamic-green-light': '#2D6A4F',
+                        'islamic-cream': '#FDF8F3',
+                        'islamic-brown': '#8B4513'
+                    },
+                    fontFamily: {
+                        'arabic': ['Scheherazade New', 'Amiri', 'serif'],
+                        'primary': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-islamic-cream font-primary">
+    
+    <!-- Decorative Islamic Pattern Background -->
+    <div class="islamic-pattern-bg fixed inset-0 opacity-5 pointer-events-none z-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-islamic-gold to-islamic-green rounded-full flex items-center justify-center">
+                        <i class="fas fa-mosque text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-islamic-green">NikahKu</span>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-700 hover:text-islamic-green transition">Fitur</a>
+                    <a href="#templates" class="text-gray-700 hover:text-islamic-green transition">Template</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-islamic-green transition">Harga</a>
+                    <a href="login.html" class="text-islamic-green hover:text-islamic-gold transition font-medium">Masuk</a>
+                    <a href="register.html" class="bg-gradient-to-r from-islamic-green to-islamic-green-light text-white px-6 py-2 rounded-full hover:shadow-lg transition transform hover:scale-105">
+                        Daftar Gratis
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-islamic-green" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#features" class="block text-gray-700 hover:text-islamic-green">Fitur</a>
+                <a href="#templates" class="block text-gray-700 hover:text-islamic-green">Template</a>
+                <a href="#pricing" class="block text-gray-700 hover:text-islamic-green">Harga</a>
+                <a href="login.html" class="block text-islamic-green font-medium">Masuk</a>
+                <a href="register.html" class="block bg-islamic-green text-white px-4 py-2 rounded-lg text-center">Daftar Gratis</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center pt-16 relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute top-20 left-10 w-32 h-32 border-2 border-islamic-gold/30 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-48 h-48 border-2 border-islamic-green/20 rounded-full animate-pulse"></div>
+        
+        <!-- Islamic Ornament Corners -->
+        <div class="absolute top-20 left-0 w-40 h-40 opacity-20">
+            <svg viewBox="0 0 100 100" fill="currentColor" class="text-islamic-gold">
+                <path d="M0,0 Q50,50 0,100 Q50,50 100,100 Q50,50 100,0 Q50,50 0,0 Z"/>
+            </svg>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <div class="inline-block bg-islamic-gold/20 text-islamic-green px-4 py-2 rounded-full text-sm font-medium mb-6">
+                        <i class="fas fa-star mr-2"></i>Undangan Digital #1 di Indonesia
+                    </div>
+                    
+                    <h1 class="text-4xl lg:text-6xl font-bold text-islamic-green leading-tight mb-6">
+                        Buat Undangan
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-islamic-gold to-islamic-brown">
+                            Pernikahan
+                        </span>
+                        <br>Islami Digital
+                    </h1>
+                    
+                    <p class="text-xl font-arabic text-islamic-gold mb-4" dir="rtl">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </p>
+                    
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                        Wujudkan undangan pernikahan impian Anda dengan sentuhan 
+                        desain Islami yang elegan. Mudah dibagikan, ramah lingkungan, 
+                        dan penuh berkah. ✨
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <a href="register.html" class="bg-gradient-to-r from-islamic-green to-islamic-green-light text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition transform hover:scale-105 text-center">
+                            <i class="fas fa-magic mr-2"></i>Buat Undangan Sekarang
+                        </a>
+                        <a href="#demo" class="border-2 border-islamic-gold text-islamic-gold px-8 py-4 rounded-full text-lg font-semibold hover:bg-islamic-gold hover:text-white transition text-center">
+                            <i class="fas fa-play mr-2"></i>Lihat Demo
+                        </a>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="flex gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-islamic-green">10K+</div>
+                            <div class="text-gray-500 text-sm">Undangan Dibuat</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-islamic-green">50+</div>
+                            <div class="text-gray-500 text-sm">Template Islami</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-islamic-green">4.9★</div>
+                            <div class="text-gray-500 text-sm">Rating Pengguna</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Content - Preview Card -->
+                <div data-aos="fade-left" data-aos-duration="1000" class="relative">
+                    <div class="relative z-10">
+                        <!-- Phone Mockup -->
+                        <div class="bg-gradient-to-br from-islamic-green to-islamic-green-light p-4 rounded-[3rem] shadow-2xl max-w-sm mx-auto">
+                            <div class="bg-white rounded-[2.5rem] overflow-hidden">
+                                <!-- Preview Content -->
+                                <div class="h-[500px] bg-gradient-to-b from-islamic-cream to-white p-6 text-center relative overflow-hidden">
+                                    <!-- Ornament Top -->
+                                    <div class="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-islamic-gold/20 to-transparent"></div>
+                                    
+                                    <div class="pt-8">
+                                        <p class="font-arabic text-islamic-gold text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                        <p class="text-gray-500 text-sm mb-4">Assalamualaikum Wr. Wb.</p>
+                                        
+                                        <p class="text-gray-600 mb-2">Kepada Yth:</p>
+                                        <p class="text-xl font-semibold text-islamic-green mb-6">Bapak/Ibu/Saudara</p>
+                                        
+                                        <div class="w-16 h-0.5 bg-islamic-gold mx-auto mb-6"></div>
+                                        
+                                        <p class="text-gray-600 text-sm mb-6">Kami mengundang Anda untuk hadir di acara pernikahan kami</p>
+                                        
+                                        <div class="space-y-2 mb-6">
+                                            <p class="text-2xl font-bold text-islamic-green">Ahmad</p>
+                                            <p class="text-islamic-gold text-2xl">&</p>
+                                            <p class="text-2xl font-bold text-islamic-green">Fatimah</p>
+                                        </div>
+                                        
+                                        <div class="bg-islamic-green/10 rounded-xl p-4 mb-6">
+                                            <p class="text-sm text-gray-600">Minggu, 15 Juni 2025</p>
+                                            <p class="text-sm text-gray-600">08:00 WIB - Selesai</p>
+                                        </div>
+                                        
+                                        <button class="bg-islamic-gold text-white px-6 py-2 rounded-full text-sm hover:bg-islamic-brown transition">
+                                            Buka Undangan
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Ornament Bottom -->
+                                    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-islamic-gold/20 to-transparent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Blobs -->
+                    <div class="absolute top-10 -right-10 w-40 h-40 bg-islamic-gold/30 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-10 -left-10 w-60 h-60 bg-islamic-green/20 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mb-4">
+                    Fitur Unggulan
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Semua yang Anda butuhkan untuk membuat undangan pernikahan digital yang sempurna
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-palette text-3xl text-islamic-green"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">50+ Template Islami</h3>
+                    <p class="text-gray-600">
+                        Pilihan template dengan ornamen arabesque, motif geometris Islam, dan desain elegan berkualitas tinggi.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-link text-3xl text-islamic-gold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">Link Personal</h3>
+                    <p class="text-gray-600">
+                        Setiap tamu mendapat link unik dengan nama mereka. Kesan personal yang tak terlupakan.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-check-circle text-3xl text-islamic-green"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">RSVP Online</h3>
+                    <p class="text-gray-600">
+                        Tamu dapat mengkonfirmasi kehadiran secara online. Data tersimpan rapi di dashboard Anda.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-music text-3xl text-islamic-gold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">Musik Nasyid</h3>
+                    <p class="text-gray-600">
+                        Latar musik nasyid dan instrumen Islami yang menyentuh hati untuk menyambut tamu.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-3xl text-islamic-green"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">Responsive Design</h3>
+                    <p class="text-gray-600">
+                        Tampilan sempurna di semua perangkat: smartphone, tablet, hingga desktop.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-3xl text-islamic-gold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-islamic-green mb-3">Countdown Timer</h3>
+                    <p class="text-gray-600">
+                        Hitung mundur menuju hari bahagia yang membuat tamu semakin menantikan.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-islamic-green to-islamic-green-light relative overflow-hidden">
+        <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6" data-aos="fade-up">
+                Siap Membuat Undangan Impian?
+            </h2>
+            <p class="text-white/80 text-lg mb-8" data-aos="fade-up" data-aos-delay="100">
+                Bergabunglah dengan ribuan pasangan yang telah mempercayakan momen spesial mereka kepada kami
+            </p>
+            <a href="register.html" class="inline-block bg-islamic-gold text-islamic-green px-10 py-4 rounded-full text-lg font-bold hover:bg-white transition transform hover:scale-105 shadow-xl" data-aos="fade-up" data-aos-delay="200">
+                Mulai Sekarang - GRATIS!
+            </a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-islamic-green text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-islamic-gold rounded-full flex items-center justify-center">
+                            <i class="fas fa-mosque text-islamic-green"></i>
+                        </div>
+                        <span class="text-xl font-bold">NikahKu</span>
+                    </div>
+                    <p class="text-white/70 text-sm">
+                        Platform undangan digital Islami terpercaya #1 di Indonesia
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Tautan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="#" class="hover:text-islamic-gold transition">Beranda</a></li>
+                        <li><a href="#features" class="hover:text-islamic-gold transition">Fitur</a></li>
+                        <li><a href="#templates" class="hover:text-islamic-gold transition">Template</a></li>
+                        <li><a href="#pricing" class="hover:text-islamic-gold transition">Harga</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Bantuan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="#" class="hover:text-islamic-gold transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Hubungi Kami</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-12 pt-8 text-center text-white/50 text-sm">
+                <p>© 2025 NikahKu. Dibuat dengan ❤️ dan ☕ di Indonesia</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
