@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Digital Islami | Digital Invitation Maker</title>
+    <title>Undangan Digital Islami | NikahKu - Digital Invitation Maker</title>
+    
+    <!-- Meta SEO -->
+    <meta name="description" content="Buat undangan pernikahan digital Islami yang elegan. Gratis, mudah, dan penuh berkah.">
+    <meta name="keywords" content="undangan digital, undangan pernikahan, undangan islami, nikah, wedding invitation">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,12 +38,30 @@
                     },
                     fontFamily: {
                         'arabic': ['Scheherazade New', 'Amiri', 'serif'],
-                        'primary': ['Poppins', 'sans-serif']
+                        'primary': ['Poppins', 'sans-serif'],
+                        'script': ['Great Vibes', 'cursive']
                     }
                 }
             }
         }
     </script>
+    
+    <style>
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Islamic Pattern Background */
+        .islamic-pattern-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* Navigation active state */
+        .nav-link.active {
+            color: #D4AF37;
+        }
+    </style>
 </head>
 <body class="bg-islamic-cream font-primary">
     
@@ -51,18 +73,20 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center space-x-2">
+                <a href="#" class="flex items-center space-x-2">
                     <div class="w-10 h-10 bg-gradient-to-br from-islamic-gold to-islamic-green rounded-full flex items-center justify-center">
                         <i class="fas fa-mosque text-white text-lg"></i>
                     </div>
                     <span class="text-xl font-bold text-islamic-green">NikahKu</span>
-                </div>
+                </a>
                 
-                <!-- Nav Links -->
+                <!-- Nav Links - Desktop -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-700 hover:text-islamic-green transition">Fitur</a>
-                    <a href="#templates" class="text-gray-700 hover:text-islamic-green transition">Template</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-islamic-green transition">Harga</a>
+                    <a href="#home" class="nav-link text-gray-700 hover:text-islamic-green transition">Beranda</a>
+                    <a href="#features" class="nav-link text-gray-700 hover:text-islamic-green transition">Fitur</a>
+                    <a href="#templates" class="nav-link text-gray-700 hover:text-islamic-green transition">Template</a>
+                    <a href="#demo" class="nav-link text-gray-700 hover:text-islamic-green transition">Demo</a>
+                    <a href="#pricing" class="nav-link text-gray-700 hover:text-islamic-green transition">Harga</a>
                     <a href="login.html" class="text-islamic-green hover:text-islamic-gold transition font-medium">Masuk</a>
                     <a href="register.html" class="bg-gradient-to-r from-islamic-green to-islamic-green-light text-white px-6 py-2 rounded-full hover:shadow-lg transition transform hover:scale-105">
                         Daftar Gratis
@@ -71,35 +95,34 @@
                 
                 <!-- Mobile Menu Button -->
                 <button class="md:hidden text-islamic-green" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-2xl"></i>
+                    <i class="fas fa-bars text-2xl" id="menuIcon"></i>
                 </button>
             </div>
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t shadow-lg">
             <div class="px-4 py-4 space-y-3">
-                <a href="#features" class="block text-gray-700 hover:text-islamic-green">Fitur</a>
-                <a href="#templates" class="block text-gray-700 hover:text-islamic-green">Template</a>
-                <a href="#pricing" class="block text-gray-700 hover:text-islamic-green">Harga</a>
-                <a href="login.html" class="block text-islamic-green font-medium">Masuk</a>
+                <a href="#home" class="block text-gray-700 hover:text-islamic-green py-2" onclick="closeMobileMenu()">Beranda</a>
+                <a href="#features" class="block text-gray-700 hover:text-islamic-green py-2" onclick="closeMobileMenu()">Fitur</a>
+                <a href="#templates" class="block text-gray-700 hover:text-islamic-green py-2" onclick="closeMobileMenu()">Template</a>
+                <a href="#demo" class="block text-gray-700 hover:text-islamic-green py-2" onclick="closeMobileMenu()">Demo</a>
+                <a href="#pricing" class="block text-gray-700 hover:text-islamic-green py-2" onclick="closeMobileMenu()">Harga</a>
+                <hr class="my-2">
+                <a href="login.html" class="block text-islamic-green font-medium py-2">Masuk</a>
                 <a href="register.html" class="block bg-islamic-green text-white px-4 py-2 rounded-lg text-center">Daftar Gratis</a>
             </div>
         </div>
     </nav>
     
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center pt-16 relative overflow-hidden">
+    <!-- =====================================================
+         HERO SECTION
+         ===================================================== -->
+    <section id="home" class="min-h-screen flex items-center pt-16 relative overflow-hidden">
         <!-- Decorative Elements -->
         <div class="absolute top-20 left-10 w-32 h-32 border-2 border-islamic-gold/30 rounded-full animate-pulse"></div>
         <div class="absolute bottom-20 right-10 w-48 h-48 border-2 border-islamic-green/20 rounded-full animate-pulse"></div>
-        
-        <!-- Islamic Ornament Corners -->
-        <div class="absolute top-20 left-0 w-40 h-40 opacity-20">
-            <svg viewBox="0 0 100 100" fill="currentColor" class="text-islamic-gold">
-                <path d="M0,0 Q50,50 0,100 Q50,50 100,100 Q50,50 100,0 Q50,50 0,0 Z"/>
-            </svg>
-        </div>
+        <div class="absolute top-1/3 right-20 w-20 h-20 border-2 border-islamic-gold/40 rotate-45 animate-bounce" style="animation-duration: 3s;"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -137,7 +160,7 @@
                     </div>
                     
                     <!-- Stats -->
-                    <div class="flex gap-8">
+                    <div class="flex gap-8 flex-wrap">
                         <div class="text-center">
                             <div class="text-3xl font-bold text-islamic-green">10K+</div>
                             <div class="text-gray-500 text-sm">Undangan Dibuat</div>
@@ -153,11 +176,11 @@
                     </div>
                 </div>
                 
-                <!-- Right Content - Preview Card -->
+                <!-- Right Content - Phone Mockup -->
                 <div data-aos="fade-left" data-aos-duration="1000" class="relative">
                     <div class="relative z-10">
                         <!-- Phone Mockup -->
-                        <div class="bg-gradient-to-br from-islamic-green to-islamic-green-light p-4 rounded-[3rem] shadow-2xl max-w-sm mx-auto">
+                        <div class="bg-gradient-to-br from-islamic-green to-islamic-green-light p-4 rounded-[3rem] shadow-2xl max-w-sm mx-auto transform hover:rotate-2 transition-transform duration-500">
                             <div class="bg-white rounded-[2.5rem] overflow-hidden">
                                 <!-- Preview Content -->
                                 <div class="h-[500px] bg-gradient-to-b from-islamic-cream to-white p-6 text-center relative overflow-hidden">
@@ -177,7 +200,7 @@
                                         
                                         <div class="space-y-2 mb-6">
                                             <p class="text-2xl font-bold text-islamic-green">Ahmad</p>
-                                            <p class="text-islamic-gold text-2xl">&</p>
+                                            <p class="text-islamic-gold text-2xl font-script">&</p>
                                             <p class="text-2xl font-bold text-islamic-green">Fatimah</p>
                                         </div>
                                         
@@ -204,25 +227,37 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <a href="#features" class="text-islamic-green/50 hover:text-islamic-green">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
     </section>
     
-    <!-- Features Section -->
-    <section id="features" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- =====================================================
+         FEATURES SECTION
+         ===================================================== -->
+    <section id="features" class="py-20 bg-white relative">
+        <div class="absolute inset-0 islamic-pattern-bg opacity-5"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mb-4">
-                    Fitur Unggulan
+                <span class="text-islamic-gold font-semibold">FITUR UNGGULAN</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mt-2 mb-4">
+                    Semua yang Anda Butuhkan
                 </h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">
-                    Semua yang Anda butuhkan untuk membuat undangan pernikahan digital yang sempurna
+                    Fitur lengkap untuk membuat undangan pernikahan digital yang sempurna dan berkesan
                 </p>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-palette text-3xl text-islamic-green"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-green group-hover:scale-110 transition">
+                        <i class="fas fa-palette text-3xl text-islamic-green group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">50+ Template Islami</h3>
                     <p class="text-gray-600">
@@ -231,9 +266,9 @@
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-link text-3xl text-islamic-gold"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-gold group-hover:scale-110 transition">
+                        <i class="fas fa-link text-3xl text-islamic-gold group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">Link Personal</h3>
                     <p class="text-gray-600">
@@ -242,9 +277,9 @@
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-check-circle text-3xl text-islamic-green"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-green group-hover:scale-110 transition">
+                        <i class="fas fa-check-circle text-3xl text-islamic-green group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">RSVP Online</h3>
                     <p class="text-gray-600">
@@ -253,9 +288,9 @@
                 </div>
                 
                 <!-- Feature 4 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="400">
-                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-music text-3xl text-islamic-gold"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-gold group-hover:scale-110 transition">
+                        <i class="fas fa-music text-3xl text-islamic-gold group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">Musik Nasyid</h3>
                     <p class="text-gray-600">
@@ -264,9 +299,9 @@
                 </div>
                 
                 <!-- Feature 5 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="500">
-                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-mobile-alt text-3xl text-islamic-green"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-16 h-16 bg-islamic-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-green group-hover:scale-110 transition">
+                        <i class="fas fa-mobile-alt text-3xl text-islamic-green group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">Responsive Design</h3>
                     <p class="text-gray-600">
@@ -275,9 +310,9 @@
                 </div>
                 
                 <!-- Feature 6 -->
-                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="600">
-                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-clock text-3xl text-islamic-gold"></i>
+                <div class="bg-gradient-to-br from-islamic-cream to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition group" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-16 h-16 bg-islamic-gold/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-islamic-gold group-hover:scale-110 transition">
+                        <i class="fas fa-clock text-3xl text-islamic-gold group-hover:text-white transition"></i>
                     </div>
                     <h3 class="text-xl font-bold text-islamic-green mb-3">Countdown Timer</h3>
                     <p class="text-gray-600">
@@ -285,10 +320,651 @@
                     </p>
                 </div>
             </div>
+            
+            <!-- Additional Features List -->
+            <div class="mt-16 bg-gradient-to-r from-islamic-green to-islamic-green-light rounded-3xl p-8 lg:p-12" data-aos="fade-up">
+                <div class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-white">
+                        <h3 class="text-2xl font-bold mb-6">Fitur Lainnya</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Galeri Foto</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Google Maps</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Ucapan & Doa</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Love Story</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>QR Code</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Amplop Digital</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Filter Instagram</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                                <span>Live Streaming</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-white/80 text-lg mb-6">Lebih dari 50 fitur untuk undangan sempurna</p>
+                        <a href="register.html" class="inline-block bg-islamic-gold text-islamic-green px-8 py-4 rounded-full font-bold hover:bg-white transition transform hover:scale-105">
+                            Coba Sekarang - GRATIS!
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     
-    <!-- CTA Section -->
+    <!-- =====================================================
+         TEMPLATES SECTION
+         ===================================================== -->
+    <section id="templates" class="py-20 bg-islamic-cream relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-islamic-gold font-semibold">TEMPLATE</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mt-2 mb-4">
+                    Pilih Template Favoritmu
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Koleksi template undangan dengan nuansa Islami yang elegan dan modern
+                </p>
+            </div>
+            
+            <!-- Template Categories -->
+            <div class="flex justify-center gap-4 mb-12 flex-wrap" data-aos="fade-up">
+                <button class="template-filter active px-6 py-2 rounded-full bg-islamic-green text-white font-medium transition" onclick="filterTemplates('all')">
+                    Semua
+                </button>
+                <button class="template-filter px-6 py-2 rounded-full bg-white text-gray-600 font-medium hover:bg-islamic-green hover:text-white transition" onclick="filterTemplates('elegant')">
+                    Elegant
+                </button>
+                <button class="template-filter px-6 py-2 rounded-full bg-white text-gray-600 font-medium hover:bg-islamic-green hover:text-white transition" onclick="filterTemplates('modern')">
+                    Modern
+                </button>
+                <button class="template-filter px-6 py-2 rounded-full bg-white text-gray-600 font-medium hover:bg-islamic-green hover:text-white transition" onclick="filterTemplates('classic')">
+                    Classic
+                </button>
+                <button class="template-filter px-6 py-2 rounded-full bg-white text-gray-600 font-medium hover:bg-islamic-green hover:text-white transition" onclick="filterTemplates('minimalist')">
+                    Minimalist
+                </button>
+            </div>
+            
+            <!-- Template Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Template 1 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="elegant" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-islamic-green to-islamic-green-light flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <p class="font-arabic text-islamic-gold text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm opacity-80">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-islamic-gold text-islamic-green text-xs font-bold px-3 py-1 rounded-full">
+                            PREMIUM
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Emerald Elegance</h3>
+                        <p class="text-gray-500 text-sm mb-4">Template elegan dengan nuansa hijau zamrud dan ornamen emas</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-islamic-green border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-islamic-gold border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 2 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="modern" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-rose-400 to-pink-600 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <p class="font-arabic text-white/80 text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm opacity-80">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-white text-rose-500 text-xs font-bold px-3 py-1 rounded-full">
+                            NEW
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Rose Garden</h3>
+                        <p class="text-gray-500 text-sm mb-4">Desain modern dengan sentuhan warna rose yang romantis</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-rose-400 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-pink-300 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 3 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="classic" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-islamic-gold to-islamic-brown flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <p class="font-arabic text-white/80 text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm opacity-80">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Golden Classic</h3>
+                        <p class="text-gray-500 text-sm mb-4">Nuansa emas klasik yang mewah dan timeless</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-islamic-gold border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-islamic-brown border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-islamic-cream border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 4 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="minimalist" data-aos="fade-up" data-aos-delay="400">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <div class="text-center text-gray-800 p-6">
+                                <p class="font-arabic text-islamic-gold text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm text-gray-500">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            FREE
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Simple White</h3>
+                        <p class="text-gray-500 text-sm mb-4">Desain minimalis yang bersih dan elegan</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-gray-400 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 5 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="elegant" data-aos="fade-up" data-aos-delay="500">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-blue-900 to-indigo-900 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <p class="font-arabic text-islamic-gold text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm opacity-80">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Royal Navy</h3>
+                        <p class="text-gray-500 text-sm mb-4">Nuansa biru royal yang megah dan sophisticated</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-blue-900 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-islamic-gold border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 6 -->
+                <div class="template-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2" data-category="modern" data-aos="fade-up" data-aos-delay="600">
+                    <div class="relative">
+                        <div class="h-64 bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <p class="font-arabic text-white/80 text-lg mb-2">بِسْمِ اللَّهِ</p>
+                                <p class="text-3xl font-script mb-2">Ahmad & Fatimah</p>
+                                <p class="text-sm opacity-80">15 . 06 . 2025</p>
+                            </div>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-white text-teal-600 text-xs font-bold px-3 py-1 rounded-full">
+                            POPULAR
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-islamic-green text-lg mb-2">Tropical Breeze</h3>
+                        <p class="text-gray-500 text-sm mb-4">Kesegaran warna tropis yang ceria dan modern</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-teal-500 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-emerald-400 border-2 border-white"></div>
+                                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200"></div>
+                            </div>
+                            <a href="#demo" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                                Preview <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View All Button -->
+            <div class="text-center mt-12" data-aos="fade-up">
+                <a href="register.html" class="inline-flex items-center gap-2 bg-islamic-green text-white px-8 py-4 rounded-full font-semibold hover:bg-islamic-green-light transition transform hover:scale-105">
+                    Lihat Semua Template
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- =====================================================
+         DEMO SECTION
+         ===================================================== -->
+    <section id="demo" class="py-20 bg-gradient-to-b from-islamic-green to-islamic-green-light relative overflow-hidden">
+        <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-islamic-gold font-semibold">DEMO UNDANGAN</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-white mt-2 mb-4">
+                    Lihat Contoh Undangan
+                </h2>
+                <p class="text-white/80 max-w-2xl mx-auto">
+                    Rasakan pengalaman membuka undangan digital seperti tamu undangan Anda
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Demo Preview -->
+                <div class="relative" data-aos="fade-right">
+                    <!-- Phone Frame -->
+                    <div class="bg-gray-900 p-3 rounded-[3rem] shadow-2xl max-w-sm mx-auto">
+                        <div class="bg-white rounded-[2.5rem] overflow-hidden">
+                            <!-- Demo iframe/content -->
+                            <div class="h-[550px] relative">
+                                <iframe 
+                                    src="invitation.html?id=demo&to=Bapak+Budi" 
+                                    class="w-full h-full border-0"
+                                    title="Demo Undangan"
+                                    loading="lazy"
+                                ></iframe>
+                                <!-- Overlay for when iframe doesn't load -->
+                                <div id="demoFallback" class="absolute inset-0 bg-gradient-to-b from-islamic-cream to-white flex items-center justify-center hidden">
+                                    <div class="text-center p-6">
+                                        <div class="w-20 h-20 bg-islamic-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <i class="fas fa-envelope-open-text text-3xl text-islamic-green"></i>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-islamic-green mb-2">Demo Undangan</h3>
+                                        <p class="text-gray-600 mb-4">Klik tombol di samping untuk melihat demo lengkap</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative -->
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-islamic-gold/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
+                </div>
+                
+                <!-- Demo Info -->
+                <div class="text-white" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold mb-6">Coba Demo Interaktif</h3>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-islamic-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-islamic-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Animasi Amplop</h4>
+                                <p class="text-white/70 text-sm">Lihat animasi amplop terbuka yang menarik saat tamu membuka undangan</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-islamic-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user text-islamic-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Nama Personal</h4>
+                                <p class="text-white/70 text-sm">Setiap tamu akan melihat namanya di undangan</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-islamic-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-music text-islamic-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Musik Latar</h4>
+                                <p class="text-white/70 text-sm">Musik nasyid yang menenangkan menyambut tamu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-islamic-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check-circle text-islamic-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">RSVP Mudah</h4>
+                                <p class="text-white/70 text-sm">Tamu dapat konfirmasi kehadiran dengan mudah</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="invitation.html?id=demo&to=Anda" target="_blank" class="bg-islamic-gold text-islamic-green px-8 py-4 rounded-full font-semibold text-center hover:bg-white transition transform hover:scale-105">
+                            <i class="fas fa-external-link-alt mr-2"></i>Buka Demo Full
+                        </a>
+                        <a href="register.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-center hover:bg-white hover:text-islamic-green transition">
+                            Buat Undangan Sendiri
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- =====================================================
+         PRICING SECTION
+         ===================================================== -->
+    <section id="pricing" class="py-20 bg-islamic-cream relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-islamic-gold font-semibold">HARGA</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mt-2 mb-4">
+                    Pilih Paket Sesuai Kebutuhan
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Setiap paket berlaku untuk 1 undangan pernikahan (1 pasangan pengantin)
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- FREE -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center mb-6">
+                        <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-gift text-2xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">FREE</h3>
+                        <p class="text-gray-500 text-sm">Untuk mencoba</p>
+                    </div>
+                    <div class="text-center mb-6">
+                        <span class="text-3xl font-bold text-gray-800">Rp 0</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span><strong>10</strong> Link Tamu</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>1 Template Basic</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Aktif 7 Hari</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-400">
+                            <i class="fas fa-times"></i>
+                            <span>Musik Latar</span>
+                        </li>
+                    </ul>
+                    <a href="register.html" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+                        Mulai Gratis
+                    </a>
+                </div>
+                
+                <!-- BASIC -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-center mb-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-star text-2xl text-blue-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">BASIC</h3>
+                        <p class="text-gray-500 text-sm">Untuk intimate</p>
+                    </div>
+                    <div class="text-center mb-6">
+                        <span class="text-3xl font-bold text-gray-800">Rp 99K</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span><strong>100</strong> Link Tamu</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Semua Template</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Aktif 30 Hari</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Musik Latar</span>
+                        </li>
+                    </ul>
+                    <a href="register.html?plan=basic" class="block w-full text-center bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition">
+                        Pilih Basic
+                    </a>
+                </div>
+                
+                <!-- PREMIUM (Popular) -->
+                <div class="bg-gradient-to-b from-islamic-green to-islamic-green-light rounded-2xl shadow-xl p-6 relative transform scale-105" data-aos="fade-up" data-aos-delay="300">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-islamic-gold text-islamic-green text-xs font-bold px-4 py-1 rounded-full">
+                        POPULER
+                    </div>
+                    <div class="text-center mb-6">
+                        <div class="w-14 h-14 bg-islamic-gold/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-crown text-2xl text-islamic-gold"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">PREMIUM</h3>
+                        <p class="text-white/70 text-sm">Paling populer</p>
+                    </div>
+                    <div class="text-center mb-6">
+                        <span class="text-3xl font-bold text-white">Rp 199K</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm text-white">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-islamic-gold"></i>
+                            <span><strong>500</strong> Link Tamu</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-islamic-gold"></i>
+                            <span>Template Premium</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-islamic-gold"></i>
+                            <span>Aktif 60 Hari</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-islamic-gold"></i>
+                            <span>Semua Fitur</span>
+                        </li>
+                    </ul>
+                    <a href="register.html?plan=premium" class="block w-full text-center bg-islamic-gold text-islamic-green py-3 rounded-xl font-semibold hover:bg-white transition">
+                        Pilih Premium
+                    </a>
+                </div>
+                
+                <!-- UNLIMITED -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border-2 border-purple-100" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-center mb-6">
+                        <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-infinity text-2xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">UNLIMITED</h3>
+                        <p class="text-gray-500 text-sm">Tanpa batas</p>
+                    </div>
+                    <div class="text-center mb-6">
+                        <span class="text-3xl font-bold text-gray-800">Rp 499K</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-purple-500"></i>
+                            <span><strong>Unlimited</strong> Link</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-purple-500"></i>
+                            <span>Semua Fitur</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-purple-500"></i>
+                            <span>Aktif 1 Tahun</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-check text-purple-500"></i>
+                            <span>Priority Support</span>
+                        </li>
+                    </ul>
+                    <a href="register.html?plan=unlimited" class="block w-full text-center bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition">
+                        Pilih Unlimited
+                    </a>
+                </div>
+            </div>
+            
+            <!-- More Info Link -->
+            <div class="text-center mt-8" data-aos="fade-up">
+                <a href="pricing.html" class="text-islamic-green font-medium hover:text-islamic-gold transition">
+                    Lihat detail lengkap & FAQ <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- =====================================================
+         TESTIMONIALS SECTION
+         ===================================================== -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-islamic-gold font-semibold">TESTIMONI</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-islamic-green mt-2 mb-4">
+                    Apa Kata Mereka?
+                </h2>
+                <p class="text-gray-600">
+                    Ribuan pasangan telah mempercayakan undangan mereka kepada kami
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-islamic-cream rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-1 text-islamic-gold mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">
+                        "Undangan digitalnya sangat cantik dan elegan! Tamu-tamu kami sangat terkesan. 
+                        Proses pembuatannya juga mudah dan cepat. Terima kasih NikahKu!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-islamic-green rounded-full flex items-center justify-center text-white font-bold">
+                            AR
+                        </div>
+                        <div>
+                            <p class="font-semibold text-islamic-green">Ahmad & Rina</p>
+                            <p class="text-sm text-gray-500">Jakarta</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-islamic-cream rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-1 text-islamic-gold mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">
+                        "Fitur RSVP online-nya sangat membantu! Kami jadi tahu persis berapa tamu yang hadir. 
+                        Desain Islaminya juga sangat sesuai dengan konsep pernikahan kami."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-islamic-gold rounded-full flex items-center justify-center text-islamic-green font-bold">
+                            FS
+                        </div>
+                        <div>
+                            <p class="font-semibold text-islamic-green">Fadil & Sarah</p>
+                            <p class="text-sm text-gray-500">Bandung</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-islamic-cream rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-1 text-islamic-gold mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">
+                        "Harganya sangat terjangkau untuk fitur yang lengkap. Link personal untuk setiap tamu 
+                        membuat undangan terasa lebih spesial. Highly recommended!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-islamic-green rounded-full flex items-center justify-center text-white font-bold">
+                            HA
+                        </div>
+                        <div>
+                            <p class="font-semibold text-islamic-green">Haris & Ayu</p>
+                            <p class="text-sm text-gray-500">Surabaya</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- =====================================================
+         CTA SECTION
+         ===================================================== -->
     <section class="py-20 bg-gradient-to-br from-islamic-green to-islamic-green-light relative overflow-hidden">
         <div class="absolute inset-0 islamic-pattern-bg opacity-10"></div>
         
@@ -299,13 +975,20 @@
             <p class="text-white/80 text-lg mb-8" data-aos="fade-up" data-aos-delay="100">
                 Bergabunglah dengan ribuan pasangan yang telah mempercayakan momen spesial mereka kepada kami
             </p>
-            <a href="register.html" class="inline-block bg-islamic-gold text-islamic-green px-10 py-4 rounded-full text-lg font-bold hover:bg-white transition transform hover:scale-105 shadow-xl" data-aos="fade-up" data-aos-delay="200">
-                Mulai Sekarang - GRATIS!
-            </a>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="register.html" class="inline-block bg-islamic-gold text-islamic-green px-10 py-4 rounded-full text-lg font-bold hover:bg-white transition transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-rocket mr-2"></i>Mulai Sekarang - GRATIS!
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank" class="inline-block border-2 border-white text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-islamic-green transition">
+                    <i class="fab fa-whatsapp mr-2"></i>Hubungi Kami
+                </a>
+            </div>
         </div>
     </section>
     
-    <!-- Footer -->
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
     <footer class="bg-islamic-green text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8">
@@ -316,33 +999,9 @@
                         </div>
                         <span class="text-xl font-bold">NikahKu</span>
                     </div>
-                    <p class="text-white/70 text-sm">
+                    <p class="text-white/70 text-sm mb-4">
                         Platform undangan digital Islami terpercaya #1 di Indonesia
                     </p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Tautan</h4>
-                    <ul class="space-y-2 text-white/70 text-sm">
-                        <li><a href="#" class="hover:text-islamic-gold transition">Beranda</a></li>
-                        <li><a href="#features" class="hover:text-islamic-gold transition">Fitur</a></li>
-                        <li><a href="#templates" class="hover:text-islamic-gold transition">Template</a></li>
-                        <li><a href="#pricing" class="hover:text-islamic-gold transition">Harga</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Bantuan</h4>
-                    <ul class="space-y-2 text-white/70 text-sm">
-                        <li><a href="#" class="hover:text-islamic-gold transition">FAQ</a></li>
-                        <li><a href="#" class="hover:text-islamic-gold transition">Hubungi Kami</a></li>
-                        <li><a href="#" class="hover:text-islamic-gold transition">Syarat & Ketentuan</a></li>
-                        <li><a href="#" class="hover:text-islamic-gold transition">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Ikuti Kami</h4>
                     <div class="flex space-x-4">
                         <a href="#" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-islamic-gold transition">
                             <i class="fab fa-instagram"></i>
@@ -358,6 +1017,44 @@
                         </a>
                     </div>
                 </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Tautan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="#home" class="hover:text-islamic-gold transition">Beranda</a></li>
+                        <li><a href="#features" class="hover:text-islamic-gold transition">Fitur</a></li>
+                        <li><a href="#templates" class="hover:text-islamic-gold transition">Template</a></li>
+                        <li><a href="#pricing" class="hover:text-islamic-gold transition">Harga</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Bantuan</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="pricing.html#faq" class="hover:text-islamic-gold transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Hubungi Kami</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-islamic-gold transition">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-islamic-gold"></i>
+                            <span>hello@nikahku.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-islamic-gold"></i>
+                            <span>+62 812-3456-7890</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-islamic-gold"></i>
+                            <span>Jakarta, Indonesia</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
             
             <div class="border-t border-white/20 mt-12 pt-8 text-center text-white/50 text-sm">
@@ -369,15 +1066,109 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Initialize AOS
         AOS.init({
             once: true,
-            duration: 800
+            duration: 800,
+            offset: 100
         });
         
+        // Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            
             menu.classList.toggle('hidden');
+            
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
         }
+        
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            
+            menu.classList.add('hidden');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+        
+        // Template Filter
+        function filterTemplates(category) {
+            const cards = document.querySelectorAll('.template-card');
+            const buttons = document.querySelectorAll('.template-filter');
+            
+            // Update button states
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-islamic-green', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-600');
+            event.target.classList.add('bg-islamic-green', 'text-white');
+            
+            // Filter cards
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                    }, 100);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-islamic-gold', 'font-semibold');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-islamic-gold', 'font-semibold');
+                }
+            });
+        });
+        
+        // Check if demo iframe loads, show fallback if not
+        setTimeout(() => {
+            const iframe = document.querySelector('#demo iframe');
+            if (iframe) {
+                iframe.onerror = () => {
+                    document.getElementById('demoFallback').classList.remove('hidden');
+                };
+            }
+        }, 3000);
     </script>
 </body>
 </html>
