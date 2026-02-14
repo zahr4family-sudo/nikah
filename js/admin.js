@@ -4,7 +4,7 @@
 // =====================================================
 
 let adminUser = null;
-const SUPER_ADMIN_EMAILS = ['admin@nikahku.com', 'superadmin@nikahku.com']; // Tambahkan email admin Anda
+const SUPER_ADMIN_EMAILS = ['zahr4family@gmail.com', 'superadmin@nikahku.com']; // Tambahkan email admin Anda
 
 // =====================================================
 // INITIALIZATION
@@ -882,5 +882,6 @@ function getDefaultDuration(plan) {
     };
     return durations[plan] || 7;
 }
+
 
 console.log('🛡️ Admin.js loaded successfully');
