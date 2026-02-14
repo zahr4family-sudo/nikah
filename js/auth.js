@@ -1,15 +1,17 @@
 // js/auth.js
 // =====================================================
-// AUTHENTICATION MODULE
+// AUTHENTICATION MODULE - FIXED VERSION
 // =====================================================
 
 // Show/Hide Loading
 function showLoading() {
-    document.getElementById('loadingOverlay').classList.remove('hidden');
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.remove('hidden');
 }
 
 function hideLoading() {
-    document.getElementById('loadingOverlay').classList.add('hidden');
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.add('hidden');
 }
 
 // Show Error Message
@@ -20,6 +22,8 @@ function showError(message) {
         errorText.textContent = message;
         errorDiv.classList.remove('hidden');
         setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+    } else {
+        alert(message);
     }
 }
 
@@ -55,8 +59,12 @@ if (loginForm) {
             const userCredential = await auth.signInWithEmailAndPassword(email, password);
             console.log('Login successful:', userCredential.user.uid);
             
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html';
+            // Check if admin
+            if (isAdminEmail(email)) {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
             
         } catch (error) {
             hideLoading();
@@ -75,6 +83,9 @@ if (loginForm) {
                     break;
                 case 'auth/too-many-requests':
                     errorMessage = 'Terlalu banyak percobaan. Coba lagi nanti';
+                    break;
+                case 'auth/invalid-credential':
+                    errorMessage = 'Email atau password salah';
                     break;
             }
             showError(errorMessage);
@@ -95,7 +106,7 @@ if (registerForm) {
         const phone = document.getElementById('phone').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        const terms = document.getElementById('terms').checked;
+        const terms = document.getElementById('terms')?.checked;
         
         // Validations
         if (!fullName || !email || !phone || !password || !confirmPassword) {
@@ -113,7 +124,7 @@ if (registerForm) {
             return;
         }
         
-        if (!terms) {
+        if (terms === false) {
             showError('Anda harus menyetujui syarat dan ketentuan');
             return;
         }
@@ -138,7 +149,10 @@ if (registerForm) {
                 phone: phone,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 plan: 'free',
-                invitationsCreated: 0
+                maxLinks: 10,
+                linkGenerated: 0,
+                invitationsCreated: 0,
+                isAdmin: isAdminEmail(email)
             });
             
             console.log('Registration successful:', user.uid);
@@ -146,9 +160,13 @@ if (registerForm) {
             hideLoading();
             showSuccess('Pendaftaran berhasil! Mengarahkan ke dashboard...');
             
-            // Redirect to dashboard after 2 seconds
+            // Redirect based on role
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                if (isAdminEmail(email)) {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
             }, 2000);
             
         } catch (error) {
@@ -173,45 +191,147 @@ if (registerForm) {
 }
 
 // =====================================================
-// GOOGLE SIGN IN
+// GOOGLE SIGN IN - FIXED VERSION
 // =====================================================
 async function loginWithGoogle() {
     showLoading();
     
     const provider = new firebase.auth.GoogleAuthProvider();
     
+    // Add scopes if needed
+    provider.addScope('email');
+    provider.addScope('profile');
+    
     try {
+        // Use signInWithPopup
         const result = await auth.signInWithPopup(provider);
         const user = result.user;
         
-        // Check if user exists in Firestore
-        const userDoc = await db.collection('users').doc(user.uid).get();
+        console.log('Google sign-in successful:', user.email);
         
-        if (!userDoc.exists) {
-            // Create new user document
-            await db.collection('users').doc(user.uid).set({
-                uid: user.uid,
-                fullName: user.displayName || 'User',
-                email: user.email,
-                phone: '',
-                photoURL: user.photoURL || '',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                plan: 'free',
-                invitationsCreated: 0
-            });
+        // Check if user exists in Firestore
+        try {
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            
+            if (!userDoc.exists) {
+                // Create new user document
+                await db.collection('users').doc(user.uid).set({
+                    uid: user.uid,
+                    fullName: user.displayName || 'User',
+                    email: user.email,
+                    phone: '',
+                    photoURL: user.photoURL || '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    plan: 'free',
+                    maxLinks: 10,
+                    linkGenerated: 0,
+                    invitationsCreated: 0,
+                    isAdmin: isAdminEmail(user.email)
+                });
+            }
+        } catch (firestoreError) {
+            console.warn('Firestore error (will retry later):', firestoreError);
+            // Continue anyway - Firestore might be initializing
         }
         
-        console.log('Google sign-in successful:', user.uid);
-        window.location.href = 'dashboard.html';
+        hideLoading();
+        
+        // Redirect based on role
+        if (isAdminEmail(user.email)) {
+            window.location.href = 'admin.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
         
     } catch (error) {
         hideLoading();
         console.error('Google sign-in error:', error);
         
-        if (error.code !== 'auth/popup-closed-by-user') {
-            showError('Gagal masuk dengan Google. Coba lagi.');
+        if (error.code === 'auth/popup-closed-by-user') {
+            // User closed popup, don't show error
+            return;
         }
+        
+        if (error.code === 'auth/unauthorized-domain') {
+            showError('Domain ini belum diizinkan. Hubungi admin untuk menambahkan domain di Firebase Console.');
+            return;
+        }
+        
+        showError('Gagal masuk dengan Google. Silakan coba login dengan email.');
     }
+}
+
+// Alternative: Sign in with redirect (for mobile/COOP issues)
+async function loginWithGoogleRedirect() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('email');
+    provider.addScope('profile');
+    
+    try {
+        await auth.signInWithRedirect(provider);
+    } catch (error) {
+        console.error('Redirect error:', error);
+        showError('Gagal mengarahkan ke Google Sign-in');
+    }
+}
+
+// Handle redirect result (call this on page load)
+async function handleGoogleRedirectResult() {
+    try {
+        const result = await auth.getRedirectResult();
+        if (result.user) {
+            console.log('Redirect sign-in successful:', result.user.email);
+            
+            // Check/create user in Firestore
+            const userDoc = await db.collection('users').doc(result.user.uid).get();
+            
+            if (!userDoc.exists) {
+                await db.collection('users').doc(result.user.uid).set({
+                    uid: result.user.uid,
+                    fullName: result.user.displayName || 'User',
+                    email: result.user.email,
+                    phone: '',
+                    photoURL: result.user.photoURL || '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    plan: 'free',
+                    maxLinks: 10,
+                    linkGenerated: 0,
+                    invitationsCreated: 0,
+                    isAdmin: isAdminEmail(result.user.email)
+                });
+            }
+            
+            // Redirect based on role
+            if (isAdminEmail(result.user.email)) {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    } catch (error) {
+        console.error('Redirect result error:', error);
+    }
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', () => {
+    handleGoogleRedirectResult();
+});
+
+// =====================================================
+// ADMIN CHECK
+// =====================================================
+// ⚠️ GANTI DENGAN EMAIL ANDA!
+const ADMIN_EMAILS = [
+    'admin@nikahku.com',
+    'superadmin@nikahku.com',
+    // 👇 Tambahkan email admin Anda di sini
+    'your-email@gmail.com'
+];
+
+function isAdminEmail(email) {
+    if (!email) return false;
+    return ADMIN_EMAILS.includes(email.toLowerCase());
 }
 
 // =====================================================
@@ -240,7 +360,13 @@ function requireAuth() {
 function redirectIfLoggedIn() {
     auth.onAuthStateChanged((user) => {
         if (user) {
-            window.location.href = 'dashboard.html';
+            if (isAdminEmail(user.email)) {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
         }
     });
 }
+
+console.log('🔐 Auth.js loaded successfully');
