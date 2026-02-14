@@ -4,7 +4,14 @@
 // =====================================================
 
 let adminUser = null;
-const SUPER_ADMIN_EMAILS = ['zahr4family@gmail.com', 'superadmin@nikahku.com']; // Tambahkan email admin Anda
+
+// ⚠️ HARUS SAMA dengan yang di auth.js!
+const SUPER_ADMIN_EMAILS = [
+    'admin@nikahku.com',
+    'superadmin@nikahku.com',
+    // 👇 Tambahkan email admin Anda di sini
+    'zahr4family@gmail.com'
+];
 
 // =====================================================
 // INITIALIZATION
@@ -12,25 +19,35 @@ const SUPER_ADMIN_EMAILS = ['zahr4family@gmail.com', 'superadmin@nikahku.com']; 
 document.addEventListener('DOMContentLoaded', () => {
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
+            // Not logged in
+            alert('Silakan login terlebih dahulu');
             window.location.href = 'login.html';
             return;
         }
         
         // Check if user is super admin
-        if (!SUPER_ADMIN_EMAILS.includes(user.email)) {
-            alert('Anda tidak memiliki akses ke halaman ini');
+        if (!SUPER_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+            alert('Anda tidak memiliki akses ke halaman Admin.\nEmail: ' + user.email);
             window.location.href = 'dashboard.html';
             return;
         }
         
         adminUser = user;
+        console.log('✅ Admin logged in:', user.email);
         initializeAdmin();
     });
 });
 
 async function initializeAdmin() {
-    await loadAdminDashboard();
-    await loadPackageSettings();
+    try {
+        await loadAdminDashboard();
+        await loadPackageSettings();
+        console.log('✅ Admin panel initialized');
+    } catch (error) {
+        console.error('Error initializing admin:', error);
+        // Show error message but don't redirect
+        showAdminToast('Gagal memuat beberapa data. Coba refresh halaman.', 'error');
+    }
 }
 
 // =====================================================
@@ -48,10 +65,18 @@ function showAdminSection(sectionName) {
         targetSection.classList.remove('hidden');
     }
     
-    // Update nav
+    // Update nav active state
     document.querySelectorAll('.admin-nav-item').forEach(item => {
         item.classList.remove('active', 'bg-islamic-gold/20', 'text-islamic-gold');
+        item.classList.add('hover:bg-gray-800');
     });
+    
+    // Find and activate the clicked nav item
+    const activeNavItem = document.querySelector(`[onclick="showAdminSection('${sectionName}')"]`);
+    if (activeNavItem) {
+        activeNavItem.classList.add('active', 'bg-islamic-gold/20', 'text-islamic-gold');
+        activeNavItem.classList.remove('hover:bg-gray-800');
+    }
     
     // Update page title
     const titles = {
@@ -66,6 +91,9 @@ function showAdminSection(sectionName) {
     
     // Load section data
     switch (sectionName) {
+        case 'dashboard':
+            loadAdminDashboard();
+            break;
         case 'users':
             loadAllUsers();
             break;
@@ -75,10 +103,16 @@ function showAdminSection(sectionName) {
         case 'transactions':
             loadAllTransactions();
             break;
+        case 'packages':
+            loadPackageSettings();
+            break;
     }
     
     // Close mobile sidebar
-    document.getElementById('adminSidebar').classList.add('-translate-x-full');
+    const sidebar = document.getElementById('adminSidebar');
+    if (sidebar) {
+        sidebar.classList.add('-translate-x-full');
+    }
 }
 
 function toggleAdminSidebar() {
@@ -110,14 +144,18 @@ async function loadAdminDashboard() {
         document.getElementById('adminTotalInvitations').textContent = invitationsSnapshot.size;
         
         // Load revenue (from transactions)
-        const transactionsSnapshot = await db.collection('transactions')
-            .where('status', '==', 'paid')
-            .get();
-        
         let totalRevenue = 0;
-        transactionsSnapshot.forEach(doc => {
-            totalRevenue += doc.data().amount || 0;
-        });
+        try {
+            const transactionsSnapshot = await db.collection('transactions')
+                .where('status', '==', 'paid')
+                .get();
+            
+            transactionsSnapshot.forEach(doc => {
+                totalRevenue += doc.data().amount || 0;
+            });
+        } catch (e) {
+            console.log('No transactions collection yet');
+        }
         document.getElementById('adminRevenue').textContent = formatRupiah(totalRevenue);
         
         // Load recent users
@@ -147,8 +185,11 @@ async function loadAdminDashboard() {
         });
         document.getElementById('recentUsersAdmin').innerHTML = recentUsersHtml || '<p class="text-gray-500 text-center py-4">Tidak ada data</p>';
         
+        console.log('✅ Dashboard loaded');
+        
     } catch (error) {
         console.error('Error loading admin dashboard:', error);
+        document.getElementById('recentUsersAdmin').innerHTML = '<p class="text-red-500 text-center py-4">Gagal memuat data</p>';
     }
 }
 
@@ -161,14 +202,29 @@ async function loadAllUsers() {
             .orderBy('createdAt', 'desc')
             .get();
         
+        if (snapshot.empty) {
+            document.getElementById('usersTableBody').innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Tidak ada data user</td>
+                </tr>
+            `;
+            return;
+        }
+        
         let html = '';
         for (const doc of snapshot.docs) {
             const user = doc.data();
             
             // Count user's invitations
-            const invitationsSnapshot = await db.collection('invitations')
-                .where('userId', '==', doc.id)
-                .get();
+            let invitationCount = 0;
+            try {
+                const invitationsSnapshot = await db.collection('invitations')
+                    .where('userId', '==', doc.id)
+                    .get();
+                invitationCount = invitationsSnapshot.size;
+            } catch (e) {
+                console.log('Error counting invitations');
+            }
             
             const planBadge = getPlanBadge(user.plan);
             const linksUsed = user.linkGenerated || 0;
@@ -193,7 +249,7 @@ async function loadAllUsers() {
                         <span class="font-medium ${linksUsed >= maxLinks ? 'text-red-500' : 'text-gray-800'}">${linksUsed}</span>
                         <span class="text-gray-400">/ ${user.plan === 'unlimited' ? '∞' : maxLinks}</span>
                     </td>
-                    <td class="px-6 py-4 text-center text-gray-800">${invitationsSnapshot.size}</td>
+                    <td class="px-6 py-4 text-center text-gray-800">${invitationCount}</td>
                     <td class="px-6 py-4 text-center">
                         <button onclick="editUser('${doc.id}')" class="text-blue-500 hover:text-blue-700 mr-2" title="Edit">
                             <i class="fas fa-edit"></i>
@@ -206,25 +262,27 @@ async function loadAllUsers() {
             `;
         }
         
-        document.getElementById('usersTableBody').innerHTML = html || `
-            <tr>
-                <td colspan="6" class="px-6 py-8 text-center text-gray-500">Tidak ada data user</td>
-            </tr>
-        `;
+        document.getElementById('usersTableBody').innerHTML = html;
+        console.log('✅ Users loaded');
         
     } catch (error) {
         console.error('Error loading users:', error);
+        document.getElementById('usersTableBody').innerHTML = `
+            <tr>
+                <td colspan="6" class="px-6 py-8 text-center text-red-500">Gagal memuat data: ${error.message}</td>
+            </tr>
+        `;
     }
 }
 
 function filterUsers() {
-    const searchTerm = document.getElementById('searchUser').value.toLowerCase();
-    const planFilter = document.getElementById('filterUserPlan').value;
+    const searchTerm = document.getElementById('searchUser')?.value?.toLowerCase() || '';
+    const planFilter = document.getElementById('filterUserPlan')?.value || '';
     const rows = document.querySelectorAll('.user-row');
     
     rows.forEach(row => {
-        const name = row.dataset.name;
-        const plan = row.dataset.plan;
+        const name = row.dataset.name || '';
+        const plan = row.dataset.plan || '';
         
         const matchesSearch = name.includes(searchTerm);
         const matchesPlan = !planFilter || plan === planFilter;
@@ -296,13 +354,12 @@ async function deleteUser(userId) {
         const batch = db.batch();
         
         for (const invDoc of invitationsSnapshot.docs) {
-            // Delete guests
+            // Delete subcollections
             const guestsSnapshot = await invDoc.ref.collection('guests').get();
             guestsSnapshot.forEach(guestDoc => {
                 batch.delete(guestDoc.ref);
             });
             
-            // Delete wishes
             const wishesSnapshot = await invDoc.ref.collection('wishes').get();
             wishesSnapshot.forEach(wishDoc => {
                 batch.delete(wishDoc.ref);
@@ -337,26 +394,36 @@ async function loadPackageSettings() {
             const settings = doc.data();
             
             // Free package
-            document.getElementById('freeMaxLinks').value = settings.free?.maxLinks || 10;
-            document.getElementById('freeMaxInvitations').value = settings.free?.maxInvitations || 1;
-            document.getElementById('freeFeatures').value = settings.free?.features || 'Template Basic, Tanpa Musik';
+            if (settings.free) {
+                document.getElementById('freeMaxLinks').value = settings.free.maxLinks || 10;
+                document.getElementById('freeMaxInvitations').value = settings.free.maxInvitations || 1;
+                document.getElementById('freeFeatures').value = settings.free.features || 'Template Basic, Tanpa Musik';
+            }
             
             // Basic package
-            document.getElementById('basicPrice').value = settings.basic?.price || 99000;
-            document.getElementById('basicMaxLinks').value = settings.basic?.maxLinks || 100;
-            document.getElementById('basicMaxInvitations').value = settings.basic?.maxInvitations || 1;
-            document.getElementById('basicDuration').value = settings.basic?.duration || 30;
+            if (settings.basic) {
+                document.getElementById('basicPrice').value = settings.basic.price || 99000;
+                document.getElementById('basicMaxLinks').value = settings.basic.maxLinks || 100;
+                document.getElementById('basicMaxInvitations').value = settings.basic.maxInvitations || 1;
+                document.getElementById('basicDuration').value = settings.basic.duration || 30;
+            }
             
             // Premium package
-            document.getElementById('premiumPrice').value = settings.premium?.price || 199000;
-            document.getElementById('premiumMaxLinks').value = settings.premium?.maxLinks || 500;
-            document.getElementById('premiumMaxInvitations').value = settings.premium?.maxInvitations || 3;
-            document.getElementById('premiumDuration').value = settings.premium?.duration || 60;
+            if (settings.premium) {
+                document.getElementById('premiumPrice').value = settings.premium.price || 199000;
+                document.getElementById('premiumMaxLinks').value = settings.premium.maxLinks || 500;
+                document.getElementById('premiumMaxInvitations').value = settings.premium.maxInvitations || 3;
+                document.getElementById('premiumDuration').value = settings.premium.duration || 60;
+            }
             
             // Unlimited package
-            document.getElementById('unlimitedPrice').value = settings.unlimited?.price || 499000;
-            document.getElementById('unlimitedDuration').value = settings.unlimited?.duration || 365;
+            if (settings.unlimited) {
+                document.getElementById('unlimitedPrice').value = settings.unlimited.price || 499000;
+                document.getElementById('unlimitedDuration').value = settings.unlimited.duration || 365;
+            }
         }
+        
+        console.log('✅ Package settings loaded');
         
     } catch (error) {
         console.error('Error loading package settings:', error);
@@ -368,28 +435,29 @@ document.getElementById('packageSettingsForm')?.addEventListener('submit', async
     
     const settings = {
         free: {
-            maxLinks: parseInt(document.getElementById('freeMaxLinks').value),
-            maxInvitations: parseInt(document.getElementById('freeMaxInvitations').value),
-            features: document.getElementById('freeFeatures').value,
-            price: 0
+            maxLinks: parseInt(document.getElementById('freeMaxLinks').value) || 10,
+            maxInvitations: parseInt(document.getElementById('freeMaxInvitations').value) || 1,
+            features: document.getElementById('freeFeatures').value || 'Template Basic',
+            price: 0,
+            duration: 7
         },
         basic: {
-            price: parseInt(document.getElementById('basicPrice').value),
-            maxLinks: parseInt(document.getElementById('basicMaxLinks').value),
-            maxInvitations: parseInt(document.getElementById('basicMaxInvitations').value),
-            duration: parseInt(document.getElementById('basicDuration').value)
+            price: parseInt(document.getElementById('basicPrice').value) || 99000,
+            maxLinks: parseInt(document.getElementById('basicMaxLinks').value) || 100,
+            maxInvitations: parseInt(document.getElementById('basicMaxInvitations').value) || 1,
+            duration: parseInt(document.getElementById('basicDuration').value) || 30
         },
         premium: {
-            price: parseInt(document.getElementById('premiumPrice').value),
-            maxLinks: parseInt(document.getElementById('premiumMaxLinks').value),
-            maxInvitations: parseInt(document.getElementById('premiumMaxInvitations').value),
-            duration: parseInt(document.getElementById('premiumDuration').value)
+            price: parseInt(document.getElementById('premiumPrice').value) || 199000,
+            maxLinks: parseInt(document.getElementById('premiumMaxLinks').value) || 500,
+            maxInvitations: parseInt(document.getElementById('premiumMaxInvitations').value) || 3,
+            duration: parseInt(document.getElementById('premiumDuration').value) || 60
         },
         unlimited: {
-            price: parseInt(document.getElementById('unlimitedPrice').value),
+            price: parseInt(document.getElementById('unlimitedPrice').value) || 499000,
             maxLinks: 999999,
             maxInvitations: 999999,
-            duration: parseInt(document.getElementById('unlimitedDuration').value)
+            duration: parseInt(document.getElementById('unlimitedDuration').value) || 365
         },
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedBy: adminUser.uid
@@ -414,6 +482,15 @@ async function loadAllInvitations() {
             .orderBy('createdAt', 'desc')
             .get();
         
+        if (snapshot.empty) {
+            document.getElementById('allInvitationsTableBody').innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Tidak ada undangan</td>
+                </tr>
+            `;
+            return;
+        }
+        
         let html = '';
         for (const doc of snapshot.docs) {
             const inv = doc.data();
@@ -421,14 +498,24 @@ async function loadAllInvitations() {
             // Get owner info
             let ownerName = '-';
             if (inv.userId) {
-                const userDoc = await db.collection('users').doc(inv.userId).get();
-                if (userDoc.exists) {
-                    ownerName = userDoc.data().fullName || userDoc.data().email;
+                try {
+                    const userDoc = await db.collection('users').doc(inv.userId).get();
+                    if (userDoc.exists) {
+                        ownerName = userDoc.data().fullName || userDoc.data().email;
+                    }
+                } catch (e) {
+                    console.log('Error getting user');
                 }
             }
             
             // Count guests
-            const guestsSnapshot = await doc.ref.collection('guests').get();
+            let guestCount = 0;
+            try {
+                const guestsSnapshot = await doc.ref.collection('guests').get();
+                guestCount = guestsSnapshot.size;
+            } catch (e) {
+                console.log('Error counting guests');
+            }
             
             const eventDate = inv.akad?.date ? formatDateIndonesian(inv.akad.date) : '-';
             
@@ -439,7 +526,7 @@ async function loadAllInvitations() {
                     </td>
                     <td class="px-6 py-4 text-gray-600">${ownerName}</td>
                     <td class="px-6 py-4 text-center text-gray-600">${eventDate}</td>
-                    <td class="px-6 py-4 text-center text-gray-800">${guestsSnapshot.size}</td>
+                    <td class="px-6 py-4 text-center text-gray-800">${guestCount}</td>
                     <td class="px-6 py-4 text-center">
                         <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Active</span>
                     </td>
@@ -455,14 +542,16 @@ async function loadAllInvitations() {
             `;
         }
         
-        document.getElementById('allInvitationsTableBody').innerHTML = html || `
-            <tr>
-                <td colspan="6" class="px-6 py-8 text-center text-gray-500">Tidak ada undangan</td>
-            </tr>
-        `;
+        document.getElementById('allInvitationsTableBody').innerHTML = html;
+        console.log('✅ Invitations loaded');
         
     } catch (error) {
         console.error('Error loading invitations:', error);
+        document.getElementById('allInvitationsTableBody').innerHTML = `
+            <tr>
+                <td colspan="6" class="px-6 py-8 text-center text-red-500">Gagal memuat data</td>
+            </tr>
+        `;
     }
 }
 
@@ -518,304 +607,13 @@ async function loadAllTransactions() {
             // Get user info
             let userName = '-';
             if (trx.userId) {
-                const userDoc = await db.collection('users').doc(trx.userId).get();
-                if (userDoc.exists) {
-                    userName = userDoc.data().fullName || userDoc.data().email;
-                }
-            }
-            
-            const statusBadge = getTransactionStatusBadge(trx.status);
-            const date = trx.createdAt?.toDate ? trx.createdAt.toDate().toLocaleDateString('id-ID') : '-';
-            
-            html += `
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 font-mono text-sm text-gray-600">${doc.id.slice(0, 12)}...</td>
-                    <td class="px-6 py-4 text-gray-800">${userName}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 bg-islamic-gold/20 text-islamic-brown rounded-full text-xs font-medium capitalize">
-                            ${trx.package || '-'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right font-medium text-gray-800">${formatRupiah(trx.amount)}</td>
-                    <td class="px-6 py-4 text-center">${statusBadge}</td>
-                    <td class="px-6 py-4 text-center text-gray-600">${date}</td>
-                    <td class="px-6 py-4 text-center">
-                        ${trx.status === 'pending' ? `
-                            <button onclick="confirmPayment('${doc.id}')" class="text-green-500 hover:text-green-700 mr-2" title="Konfirmasi">
-                                <i class="fas fa-check"></i>
-                            </button>
-                        ` : ''}
-                        <button onclick="viewTransaction('${doc.id}')" class="text-blue-500 hover:text-blue-700" title="Detail">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }
-        
-        document.getElementById('transactionsTableBody').innerHTML = html;
-        
-    } catch (error) {
-        console.error('Error loading transactions:', error);
-    }
-}
-
-async function confirmPayment(transactionId) {
-    if (!confirm('Konfirmasi pembayaran ini?')) return;
-    
-    try {
-        const trxDoc = await db.collection('transactions').doc(transactionId).get();
-        const trx = trxDoc.data();
-        
-        // Update transaction status
-        await db.collection('transactions').doc(transactionId).update({
-            status: 'paid',
-            paidAt: firebase.firestore.FieldValue.serverTimestamp(),
-            confirmedBy: adminUser.uid
-        });
-        
-        // Get package settings
-        const packageDoc = await db.collection('settings').doc('packages').get();
-        const packageSettings = packageDoc.data();
-        const planSettings = packageSettings[trx.package] || {};
-        
-        // Update user's plan
-        await db.collection('users').doc(trx.userId).update({
-            plan: trx.package,
-            maxLinks: planSettings.maxLinks || 100,
-            planExpiry: new Date(Date.now() + (planSettings.duration || 30) * 24 * 60 * 60 * 1000),
-            linkGenerated: 0 // Reset link count
-        });
-        
-        loadAllTransactions();
-        loadAdminDashboard();
-        showAdminToast('Pembayaran berhasil dikonfirmasi');
-        
-    } catch (error) {
-        console.error('Error confirming payment:', error);
-        showAdminToast('Gagal mengkonfirmasi pembayaran', 'error');
-    }
-}
-
-// =====================================================
-// UTILITY FUNCTIONS
-// =====================================================
-function getPlanBadge(plan) {
-    const badges = {
-        'free': '<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">Free</span>',
-        'basic': '<span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Basic</span>',
-        'premium': '<span class="px-3 py-1 bg-islamic-gold/20 text-islamic-brown rounded-full text-xs font-medium">Premium</span>',
-        'unlimited': '<span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">Unlimited</span>'
-    };
-    return badges[plan] || badges['free'];
-}
-
-function getTransactionStatusBadge(status) {
-    const badges = {
-        'pending': '<span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>',
-        'paid': '<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Paid</span>',
-        'expired': '<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">Expired</span>'
-    };
-    return badges[status] || badges['pending'];
-}
-
-function formatRupiah(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(amount);
-}
-
-function showAdminToast(message, type = 'success') {
-    const toast = document.getElementById('adminToast');
-    const toastMessage = document.getElementById('adminToastMessage');
-    
-    toastMessage.textContent = message;
-    
-    if (type === 'error') {
-        toast.classList.remove('bg-green-500');
-        toast.classList.add('bg-red-500');
-    } else {
-        toast.classList.remove('bg-red-500');
-        toast.classList.add('bg-green-500');
-    }
-    
-    toast.classList.remove('hidden');
-    
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 3000);
-}
-
-function adminLogout() {
-    auth.signOut().then(() => {
-        window.location.href = 'login.html';
-    });
-}
-
-// =====================================================
-// TRANSACTION MANAGEMENT - UPGRADE CONFIRMATION
-// =====================================================
-
-async function confirmPayment(transactionId) {
-    if (!confirm('Konfirmasi pembayaran ini dan upgrade paket undangan?')) return;
-    
-    try {
-        // Get transaction details
-        const trxDoc = await db.collection('transactions').doc(transactionId).get();
-        const trx = trxDoc.data();
-        
-        if (!trx) {
-            showAdminToast('Transaksi tidak ditemukan', 'error');
-            return;
-        }
-        
-        // Get package settings
-        const packageDoc = await db.collection('settings').doc('packages').get();
-        const packageSettings = packageDoc.data() || {};
-        const planSettings = packageSettings[trx.package] || {};
-        
-        // Calculate new expiry date
-        const duration = planSettings.duration || getDefaultDuration(trx.package);
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + duration);
-        
-        // Get max links for the plan
-        const maxLinks = planSettings.maxLinks || getDefaultMaxLinks(trx.package);
-        
-        // Update invitation with new plan
-        await db.collection('invitations').doc(trx.invitationId).update({
-            plan: trx.package,
-            maxLinks: maxLinks,
-            expiryDate: expiryDate,
-            upgradedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            lastTransactionId: transactionId
-        });
-        
-        // Update transaction status
-        await db.collection('transactions').doc(transactionId).update({
-            status: 'paid',
-            paidAt: firebase.firestore.FieldValue.serverTimestamp(),
-            confirmedBy: adminUser.uid
-        });
-        
-        // Notify user (you can implement push notification or email here)
-        // For now, just log it
-        console.log(`Payment confirmed for invitation ${trx.invitationId}, upgraded to ${trx.package}`);
-        
-        loadAllTransactions();
-        loadAdminDashboard();
-        showAdminToast('Pembayaran dikonfirmasi & paket berhasil diupgrade!');
-        
-    } catch (error) {
-        console.error('Error confirming payment:', error);
-        showAdminToast('Gagal mengkonfirmasi pembayaran', 'error');
-    }
-}
-
-async function rejectPayment(transactionId) {
-    const reason = prompt('Alasan penolakan (opsional):');
-    
-    if (!confirm('Tolak pembayaran ini?')) return;
-    
-    try {
-        await db.collection('transactions').doc(transactionId).update({
-            status: 'rejected',
-            rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            rejectedBy: adminUser.uid,
-            rejectionReason: reason || 'Tidak valid'
-        });
-        
-        loadAllTransactions();
-        showAdminToast('Pembayaran ditolak');
-        
-    } catch (error) {
-        console.error('Error rejecting payment:', error);
-        showAdminToast('Gagal menolak pembayaran', 'error');
-    }
-}
-
-async function viewTransaction(transactionId) {
-    try {
-        const doc = await db.collection('transactions').doc(transactionId).get();
-        const trx = doc.data();
-        
-        // Get user info
-        let userName = '-';
-        if (trx.userId) {
-            const userDoc = await db.collection('users').doc(trx.userId).get();
-            if (userDoc.exists) {
-                userName = userDoc.data().fullName || userDoc.data().email;
-            }
-        }
-        
-        // Get invitation info
-        let invitationName = '-';
-        if (trx.invitationId) {
-            const invDoc = await db.collection('invitations').doc(trx.invitationId).get();
-            if (invDoc.exists) {
-                const inv = invDoc.data();
-                invitationName = `${inv.groom?.name || '-'} & ${inv.bride?.name || '-'}`;
-            }
-        }
-        
-        const date = trx.createdAt?.toDate ? trx.createdAt.toDate().toLocaleString('id-ID') : '-';
-        
-        alert(`
-Detail Transaksi
-================
-ID: ${transactionId}
-User: ${userName}
-Undangan: ${invitationName}
-Paket: ${trx.package?.toUpperCase()}
-Jumlah: ${formatRupiah(trx.amount)}
-Status: ${trx.status?.toUpperCase()}
-Tanggal: ${date}
-
-Pengirim: ${trx.senderName || '-'}
-Bank: ${trx.senderBank || '-'}
-
-Bukti Transfer: ${trx.proofUrl ? 'Ada' : 'Tidak ada'}
-        `);
-        
-        // Open proof in new tab if exists
-        if (trx.proofUrl && confirm('Lihat bukti transfer?')) {
-            window.open(trx.proofUrl, '_blank');
-        }
-        
-    } catch (error) {
-        console.error('Error viewing transaction:', error);
-        showAdminToast('Gagal memuat detail transaksi', 'error');
-    }
-}
-
-// Update transactions table to show action buttons
-async function loadAllTransactions() {
-    try {
-        const snapshot = await db.collection('transactions')
-            .orderBy('createdAt', 'desc')
-            .get();
-        
-        if (snapshot.empty) {
-            document.getElementById('transactionsTableBody').innerHTML = `
-                <tr>
-                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">Belum ada transaksi</td>
-                </tr>
-            `;
-            return;
-        }
-        
-        let html = '';
-        for (const doc of snapshot.docs) {
-            const trx = doc.data();
-            
-            // Get user info
-            let userName = '-';
-            if (trx.userId) {
-                const userDoc = await db.collection('users').doc(trx.userId).get();
-                if (userDoc.exists) {
-                    userName = userDoc.data().fullName || userDoc.data().email;
+                try {
+                    const userDoc = await db.collection('users').doc(trx.userId).get();
+                    if (userDoc.exists) {
+                        userName = userDoc.data().fullName || userDoc.data().email;
+                    }
+                } catch (e) {
+                    console.log('Error getting user');
                 }
             }
             
@@ -846,11 +644,6 @@ async function loadAllTransactions() {
                         <button onclick="viewTransaction('${doc.id}')" class="text-blue-500 hover:text-blue-700" title="Detail">
                             <i class="fas fa-eye"></i>
                         </button>
-                        ${trx.proofUrl ? `
-                            <a href="${trx.proofUrl}" target="_blank" class="text-purple-500 hover:text-purple-700 ml-2" title="Bukti Transfer">
-                                <i class="fas fa-image"></i>
-                            </a>
-                        ` : ''}
                     </td>
                 </tr>
             `;
@@ -860,28 +653,159 @@ async function loadAllTransactions() {
         
     } catch (error) {
         console.error('Error loading transactions:', error);
+        document.getElementById('transactionsTableBody').innerHTML = `
+            <tr>
+                <td colspan="7" class="px-6 py-8 text-center text-gray-500">Belum ada transaksi</td>
+            </tr>
+        `;
     }
 }
 
-function getDefaultMaxLinks(plan) {
-    const limits = {
-        'free': 10,
-        'basic': 100,
-        'premium': 500,
-        'unlimited': 999999
+async function confirmPayment(transactionId) {
+    if (!confirm('Konfirmasi pembayaran ini?')) return;
+    
+    try {
+        const trxDoc = await db.collection('transactions').doc(transactionId).get();
+        const trx = trxDoc.data();
+        
+        // Get package limits
+        const maxLinks = getDefaultMaxLinks(trx.package);
+        const duration = getDefaultDuration(trx.package);
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + duration);
+        
+        // Update invitation plan
+        await db.collection('invitations').doc(trx.invitationId).update({
+            plan: trx.package,
+            maxLinks: maxLinks,
+            expiryDate: expiryDate
+        });
+        
+        // Update transaction status
+        await db.collection('transactions').doc(transactionId).update({
+            status: 'paid',
+            paidAt: firebase.firestore.FieldValue.serverTimestamp(),
+            confirmedBy: adminUser.uid
+        });
+        
+        loadAllTransactions();
+        showAdminToast('Pembayaran dikonfirmasi!');
+        
+    } catch (error) {
+        console.error('Error confirming payment:', error);
+        showAdminToast('Gagal mengkonfirmasi', 'error');
+    }
+}
+
+async function rejectPayment(transactionId) {
+    if (!confirm('Tolak pembayaran ini?')) return;
+    
+    try {
+        await db.collection('transactions').doc(transactionId).update({
+            status: 'rejected',
+            rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            rejectedBy: adminUser.uid
+        });
+        
+        loadAllTransactions();
+        showAdminToast('Pembayaran ditolak');
+        
+    } catch (error) {
+        console.error('Error rejecting payment:', error);
+        showAdminToast('Gagal menolak', 'error');
+    }
+}
+
+async function viewTransaction(transactionId) {
+    try {
+        const doc = await db.collection('transactions').doc(transactionId).get();
+        const trx = doc.data();
+        
+        alert(`
+Detail Transaksi
+================
+ID: ${transactionId}
+Paket: ${trx.package?.toUpperCase()}
+Jumlah: ${formatRupiah(trx.amount)}
+Status: ${trx.status?.toUpperCase()}
+Pengirim: ${trx.senderName || '-'}
+Bank: ${trx.senderBank || '-'}
+        `);
+        
+        if (trx.proofUrl) {
+            if (confirm('Lihat bukti transfer?')) {
+                window.open(trx.proofUrl, '_blank');
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error viewing transaction:', error);
+    }
+}
+
+// =====================================================
+// UTILITY FUNCTIONS
+// =====================================================
+function getPlanBadge(plan) {
+    const badges = {
+        'free': '<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">Free</span>',
+        'basic': '<span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Basic</span>',
+        'premium': '<span class="px-3 py-1 bg-islamic-gold/20 text-islamic-brown rounded-full text-xs font-medium">Premium</span>',
+        'unlimited': '<span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">Unlimited</span>'
     };
+    return badges[plan] || badges['free'];
+}
+
+function getTransactionStatusBadge(status) {
+    const badges = {
+        'pending': '<span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>',
+        'paid': '<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Paid</span>',
+        'rejected': '<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">Rejected</span>',
+        'expired': '<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">Expired</span>'
+    };
+    return badges[status] || badges['pending'];
+}
+
+function getDefaultMaxLinks(plan) {
+    const limits = { 'free': 10, 'basic': 100, 'premium': 500, 'unlimited': 999999 };
     return limits[plan] || 10;
 }
 
 function getDefaultDuration(plan) {
-    const durations = {
-        'free': 7,
-        'basic': 30,
-        'premium': 60,
-        'unlimited': 365
-    };
+    const durations = { 'free': 7, 'basic': 30, 'premium': 60, 'unlimited': 365 };
     return durations[plan] || 7;
 }
 
+function showAdminToast(message, type = 'success') {
+    const toast = document.getElementById('adminToast');
+    const toastMessage = document.getElementById('adminToastMessage');
+    
+    if (!toast || !toastMessage) {
+        alert(message);
+        return;
+    }
+    
+    toastMessage.textContent = message;
+    
+    if (type === 'error') {
+        toast.classList.remove('bg-green-500');
+        toast.classList.add('bg-red-500');
+    } else {
+        toast.classList.remove('bg-red-500');
+        toast.classList.add('bg-green-500');
+    }
+    
+    toast.classList.remove('hidden');
+    
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
+
+function adminLogout() {
+    auth.signOut().then(() => {
+        window.location.href = 'login.html';
+    });
+}
 
 console.log('🛡️ Admin.js loaded successfully');
